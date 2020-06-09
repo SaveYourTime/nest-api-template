@@ -8,6 +8,7 @@ import {
   HttpCode,
   Patch,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
@@ -27,7 +28,7 @@ export class TasksController {
   }
 
   @Get(':id')
-  getTaskById(@Param('id') id: number): Task {
+  getTaskById(@Param('id', ParseIntPipe) id: number): Task {
     return this.tasksService.getTaskById(id);
   }
 
