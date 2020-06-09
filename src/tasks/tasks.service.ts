@@ -26,14 +26,14 @@ export class TasksService {
     return tasks;
   }
 
-  getTaskById(id: string): Task {
+  getTaskById(id: number): Task {
     return this.tasks.find(task => task.id === id);
   }
 
   createTask(createTaskDto: CreateTaskDto): Task {
     const { title, description } = createTaskDto;
     const task: Task = {
-      id: `${this.tasks.length + 1}`,
+      id: this.tasks.length + 1,
       title,
       description,
       status: TaskStatus.OPEN,
@@ -42,7 +42,7 @@ export class TasksService {
     return task;
   }
 
-  updateTaskStatus(id: string, status: TaskStatus): Task {
+  updateTaskStatus(id: number, status: TaskStatus): Task {
     const task: Task = this.getTaskById(id);
     if (task) {
       task.status = status;
@@ -50,7 +50,7 @@ export class TasksService {
     return task;
   }
 
-  deleteTask(id: string): void {
+  deleteTask(id: number): void {
     this.tasks = this.tasks.filter(task => task.id !== id);
   }
 }

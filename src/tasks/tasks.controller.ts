@@ -27,7 +27,7 @@ export class TasksController {
   }
 
   @Get(':id')
-  getTaskById(@Param('id') id: string): Task {
+  getTaskById(@Param('id') id: number): Task {
     return this.tasksService.getTaskById(id);
   }
 
@@ -38,7 +38,7 @@ export class TasksController {
 
   @Patch(':id/status')
   updateTaskStatus(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body('status') status: TaskStatus,
   ): Task {
     return this.tasksService.updateTaskStatus(id, status);
@@ -46,7 +46,7 @@ export class TasksController {
 
   @Delete(':id')
   @HttpCode(204)
-  deleteTask(@Param('id') id: string): void {
+  deleteTask(@Param('id') id: number): void {
     this.tasksService.deleteTask(id);
   }
 }
