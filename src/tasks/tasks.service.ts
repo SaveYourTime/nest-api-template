@@ -38,13 +38,12 @@ export class TasksService {
     return await this.taskRepository.createTask(createTaskDto);
   }
 
-  // updateTaskStatus(id: number, status: TaskStatus): Task {
-  //   const task: Task = this.getTaskById(id);
-  //   if (task) {
-  //     task.status = status;
-  //   }
-  //   return task;
-  // }
+  async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+    const task = await this.findOne(id);
+    task.status = status;
+    await task.save();
+    return task;
+  }
 
   async delete(id: number): Promise<void> {
     const { affected } = await this.taskRepository.delete(id);
