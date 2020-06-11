@@ -46,7 +46,9 @@ export class TasksService {
   //   return task;
   // }
 
-  // deleteTask(id: number): void {
-  //   this.tasks = this.tasks.filter(task => task.id !== id);
-  // }
+  async delete(id: number): Promise<void> {
+    const { affected } = await this.taskRepository.delete(id);
+    if (!affected)
+      throw new NotFoundException(`Task with ID: '${id}' not found.`);
+  }
 }
