@@ -5,6 +5,7 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import {
   ConflictException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 @EntityRepository(User)
@@ -12,13 +13,11 @@ export class UserRepository extends Repository<User> {
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, password } = authCredentialsDto;
 
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User();
     user.username = username;
     user.password = hashedPassword;
-    user.salt = salt;
 
     try {
       await user.save();
@@ -29,5 +28,18 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<User> {
+    const { username, password } = authCredentialsDto;
+
+    const user = await this.findOne({ username });
+    const valid = await user?.validatePassword(password);
+
+    if (user && valid) {
+      user.password = undefined;
+      return user;
+    }
+    throw new UnauthorizedException();
   }
 }
