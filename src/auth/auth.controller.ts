@@ -1,4 +1,12 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Res,
+  Body,
+  HttpStatus,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
@@ -14,9 +22,12 @@ export class AuthController {
   }
 
   @Post('signin')
-  signIn(
+  async signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
-  ): Promise<{ accessToken: string }> {
-    return this.authService.signIn(authCredentialsDto);
+    @Res() res: Response,
+  ): Promise<void> {
+    const token = await this.authService.signIn(authCredentialsDto);
+    res.cookie('token', token, { maxAge: 15 * 60 * 1000, httpOnly: true });
+    res.status(HttpStatus.OK).json({ token });
   }
 }
