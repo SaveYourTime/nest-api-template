@@ -11,7 +11,10 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({ secret: 'nestjs', signOptions: { expiresIn: 3600 } }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
+    }),
   ],
   exports: [JwtStrategy, PassportModule],
   controllers: [AuthController],

@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         cookieExtractor,
       ]),
-      secretOrKey: 'nestjs',
+      secretOrKey: process.env.JWT_SECRET_KEY,
     });
   }
 

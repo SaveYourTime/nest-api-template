@@ -27,7 +27,10 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const token = await this.authService.signIn(authCredentialsDto);
-    res.cookie('token', token, { maxAge: 15 * 60 * 1000, httpOnly: true });
+    res.cookie('token', token, {
+      maxAge: +process.env.JWT_EXPIRES_IN,
+      httpOnly: true,
+    });
     res.status(HttpStatus.OK).json({ token });
   }
 }
