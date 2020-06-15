@@ -33,7 +33,7 @@ export class Task extends BaseEntity {
   @ManyToOne(
     type => User,
     user => user.id,
-    { eager: false, onUpdate: 'CASCADE' },
+    { eager: false, onUpdate: 'CASCADE', nullable: false },
   )
   user: User;
 }
