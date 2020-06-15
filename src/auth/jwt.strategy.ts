@@ -6,7 +6,7 @@ import { JwtPayload } from './jwt-payload.interface';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 
-const cookieExtractor = (req: Request): string => req?.cookies?.['token'];
+const cookieExtractor = (req: Request): string => req?.cookies?.token;
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

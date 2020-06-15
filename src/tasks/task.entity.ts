@@ -36,4 +36,7 @@ export class Task extends BaseEntity {
     { eager: false, onUpdate: 'CASCADE', nullable: false },
   )
   user: User;
+
+  @Column()
+  userId: number;
 }

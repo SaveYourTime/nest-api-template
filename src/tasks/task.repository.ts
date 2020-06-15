@@ -7,9 +7,11 @@ import { User } from '../auth/user.entity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
-  async findAll(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  async findAll(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     const { search, status } = filterDto;
-    const query = this.createQueryBuilder();
+    const query = this.createQueryBuilder('task');
+
+    query.where('task.userId = :userId', { userId: user.id });
 
     if (search) {
       query.andWhere('(title LIKE :search OR description LIKE :search)', {
