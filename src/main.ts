@@ -8,12 +8,13 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v1');
-  app.enableCors();
+  app.enableCors({ origin: process.env.ORIGIN });
   app.use(helmet());
   app.use(cookieParser());
   await app.listen(process.env.PORT);
 
   const logger = new Logger('bootstrap');
   logger.log(`Application is running on: ${await app.getUrl()}`);
+  logger.log(`Accepting requests from origin: "${process.env.ORIGIN}"`);
 }
 bootstrap();
