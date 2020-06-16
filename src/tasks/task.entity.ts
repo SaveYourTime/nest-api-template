@@ -30,11 +30,11 @@ export class Task extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(
-    type => User,
-    user => user.id,
-    { eager: false, onUpdate: 'CASCADE', nullable: false },
-  )
+  @ManyToOne((type) => User, (user) => user.id, {
+    eager: false,
+    onUpdate: 'CASCADE',
+    nullable: false,
+  })
   user: User;
 
   @Column()

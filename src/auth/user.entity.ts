@@ -29,11 +29,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(
-    type => Task,
-    task => task.user,
-    { eager: true },
-  )
+  @OneToMany((type) => Task, (task) => task.user, { eager: true })
   task: Task[];
 
   async validatePassword(password: string): Promise<boolean> {
