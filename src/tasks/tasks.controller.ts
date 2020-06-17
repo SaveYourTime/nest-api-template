@@ -14,7 +14,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiParam, ApiBody } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -40,6 +40,7 @@ export class TasksController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', example: 1 })
   findOne(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
@@ -57,6 +58,13 @@ export class TasksController {
   }
 
   @Patch(':id/status')
+  @ApiParam({ name: 'id', example: 1 })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { status: { type: 'string', example: TaskStatus.DONE } },
+    },
+  })
   updateTaskStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', TaskStatusValidationPipe) status: TaskStatus,
@@ -66,6 +74,7 @@ export class TasksController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', example: 1 })
   @HttpCode(204)
   delete(
     @Param('id', ParseIntPipe) id: number,
