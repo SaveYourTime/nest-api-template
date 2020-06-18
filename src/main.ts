@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger, INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { RolesGuard } from './auth/roles.guard';
 
 const setupSwagger = (app: INestApplication): void => {
   const options = new DocumentBuilder()
@@ -24,6 +25,7 @@ async function bootstrap() {
   app.enableCors({ origin: process.env.ORIGIN });
   app.use(helmet());
   app.use(cookieParser());
+  app.useGlobalGuards(new RolesGuard(new Reflector()));
   setupSwagger(app);
   await app.listen(process.env.PORT);
 

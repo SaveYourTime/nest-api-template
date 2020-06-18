@@ -23,6 +23,7 @@ import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiBearerAuth()
 @ApiTags('tasks')
@@ -32,8 +33,9 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
+  @UsePipes(ValidationPipe)
   findAll(
-    @Query(ValidationPipe) filterDto: GetTasksFilterDto,
+    @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
     return this.tasksService.findAll(filterDto, user);
@@ -58,6 +60,7 @@ export class TasksController {
   }
 
   @Patch(':id/status')
+  @Roles('admin')
   @ApiParam({ name: 'id', example: 1 })
   @ApiBody({
     schema: {
@@ -74,6 +77,7 @@ export class TasksController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   @ApiParam({ name: 'id', example: 1 })
   @HttpCode(204)
   delete(
