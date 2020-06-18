@@ -28,7 +28,9 @@ async function bootstrap() {
   await app.listen(process.env.PORT);
 
   const logger = new Logger('bootstrap');
-  logger.log(`Application is running on: ${await app.getUrl()}`);
+  const URL = await app.getUrl();
+  logger.log(`Application is running on: ${URL}`);
+  logger.log(`Swagger is running on: ${URL}/api`);
   logger.log(`Accepting requests from origin: "${process.env.ORIGIN}"`);
 }
 bootstrap();
