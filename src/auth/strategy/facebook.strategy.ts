@@ -3,7 +3,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-facebook';
 import { AuthRepository } from '../auth.repository';
 import { User } from '../../users/user.entity';
-import { Gender } from '../../users/gender.enum';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy) {
@@ -29,13 +28,10 @@ export class FacebookStrategy extends PassportStrategy(Strategy) {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-  ): Promise<any> {
+  ): Promise<User> {
     const {
       id,
-      gender,
-      name: { familyName, givenName },
       emails: [{ value: email }],
-      photos: [{ value: photo }],
     } = profile;
 
     let user = await this.authRepository.findOne({ facebookId: id });
@@ -50,15 +46,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy) {
       return user;
     }
 
-    user = new User();
-    user.facebookId = id;
-    user.email = email;
-    user.username = email;
-    user.firstName = familyName;
-    user.lastName = givenName;
-    user.gender = gender === 'male' ? Gender.MALE : Gender.FEMALE;
-    user.photo = photo;
-    await user.save();
+    user = await this.authRepository.signUpWithFacebook(profile);
     return user;
   }
 }

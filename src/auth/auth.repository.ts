@@ -5,8 +5,10 @@ import {
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Profile } from 'passport-facebook';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { User } from '../users/user.entity';
+import { Gender } from '../users/gender.enum';
 
 @EntityRepository(User)
 export class AuthRepository extends Repository<User> {
@@ -41,5 +43,26 @@ export class AuthRepository extends Repository<User> {
       return user.id;
     }
     throw new UnauthorizedException();
+  }
+
+  async signUpWithFacebook(profile: Profile): Promise<User> {
+    const {
+      id,
+      gender,
+      name: { familyName, givenName },
+      emails: [{ value: email }],
+      photos: [{ value: photo }],
+    } = profile;
+
+    const user = new User();
+    user.facebookId = id;
+    user.email = email;
+    user.username = email;
+    user.firstName = familyName;
+    user.lastName = givenName;
+    user.gender = gender === 'male' ? Gender.MALE : Gender.FEMALE;
+    user.photo = photo;
+    await user.save();
+    return user;
   }
 }
