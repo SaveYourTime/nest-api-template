@@ -52,10 +52,7 @@ export class AuthController {
 
   @Get('facebook/callback')
   @UseGuards(AuthGuard('facebook'))
-  async facebookCallback(
-    @GetUser('id') id: number,
-    @Res() res: Response,
-  ): Promise<void> {
+  facebookCallback(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     res.cookie('token', token, {
