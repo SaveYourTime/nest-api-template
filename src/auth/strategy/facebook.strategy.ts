@@ -5,7 +5,7 @@ import { AuthRepository } from '../auth.repository';
 import { User } from '../../users/user.entity';
 
 @Injectable()
-export class FacebookStrategy extends PassportStrategy(Strategy) {
+export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(private authRepository: AuthRepository) {
     super({
       clientID: process.env.FACEBOOK_APP_ID,
