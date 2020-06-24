@@ -37,12 +37,16 @@ export class AuthRepository extends Repository<User> {
     const { username, password } = authCredentialsDto;
 
     const user = await this.findOne({ username });
-    const valid = await user?.validatePassword(password);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
 
+    const valid = await user.validatePassword(password);
     if (user && valid) {
       return user.id;
     }
-    throw new UnauthorizedException();
+
+    throw new UnauthorizedException('Password incorrect');
   }
 
   async signUpWithFacebook(profile: Profile): Promise<User> {
