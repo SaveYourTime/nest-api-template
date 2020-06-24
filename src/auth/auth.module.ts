@@ -4,20 +4,22 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserRepository } from './user.repository';
-import { JwtStrategy } from './jwt.strategy';
+import { AuthRepository } from './auth.repository';
+import { UserRepository } from '../users/user.repository';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { FacebookStrategy } from './strategy/facebook.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([AuthRepository, UserRepository]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
-  exports: [JwtStrategy, PassportModule],
+  exports: [PassportModule, JwtStrategy, FacebookStrategy],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, FacebookStrategy],
 })
 export class AuthModule {}

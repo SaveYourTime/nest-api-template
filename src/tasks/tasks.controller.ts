@@ -22,7 +22,7 @@ import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
 import { GetUser } from '../auth/get-user.decorator';
-import { User } from '../auth/user.entity';
+import { User } from '../users/user.entity';
 import { Roles } from '../auth/roles.decorator';
 
 @ApiBearerAuth()

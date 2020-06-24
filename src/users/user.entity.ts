@@ -6,10 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import * as bcrypt from 'bcryptjs';
 import { Gender } from './gender.enum';
+import { Task } from '../tasks/task.entity';
 
 @Entity()
 @Unique(['username'])
@@ -61,6 +63,9 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany((type) => Task, (task) => task.user, { eager: false })
+  task: Task[];
 
   async validatePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.password);

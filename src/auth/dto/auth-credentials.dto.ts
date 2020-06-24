@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsString,
   IsNotEmpty,
   MinLength,
@@ -8,7 +9,8 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthCredentialsDto {
-  @ApiProperty({ example: 'user01' })
+  @ApiProperty({ example: 'user01@gmail.com' })
+  @IsEmail()
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
