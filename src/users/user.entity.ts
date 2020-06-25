@@ -49,11 +49,11 @@ export class User extends BaseEntity {
   @ApiProperty({
     type: 'enum',
     enum: Gender,
-    default: Gender.FEMALE,
-    description: 'The status of a task',
+    nullable: true,
+    description: 'The gender of the user',
   })
-  @Column({ type: 'enum', enum: Gender, default: Gender.FEMALE })
-  gender: Gender;
+  @Column({ type: 'enum', enum: Gender, nullable: true })
+  gender?: Gender;
 
   @Column({ nullable: true })
   photo?: string;
