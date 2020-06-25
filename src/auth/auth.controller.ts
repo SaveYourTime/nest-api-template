@@ -46,19 +46,14 @@ export class AuthController {
   }
 
   @Get('facebook')
-  @UseGuards(AuthGuard('facebook'))
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  facebook(): void {}
-
-  @Get('facebook/callback')
-  @UseGuards(AuthGuard('facebook'))
-  facebookCallback(@GetUser('id') id: number, @Res() res: Response): void {
+  @UseGuards(AuthGuard('facebook-token'))
+  signInWithFacebook(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     res.cookie('token', token, {
       maxAge: +process.env.JWT_EXPIRES_IN,
       httpOnly: true,
     });
-    res.redirect(process.env.WEB_URL);
+    res.status(HttpStatus.OK).json({ token });
   }
 }
