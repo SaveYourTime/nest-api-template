@@ -8,6 +8,7 @@ import { AuthRepository } from './auth.repository';
 import { UserRepository } from '../users/user.repository';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
+import { GoogleStrategy } from './strategy/google.strategy';
 
 @Module({
   imports: [
@@ -18,8 +19,8 @@ import { FacebookStrategy } from './strategy/facebook.strategy';
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
-  exports: [PassportModule, JwtStrategy, FacebookStrategy],
+  exports: [PassportModule, JwtStrategy, FacebookStrategy, GoogleStrategy],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, FacebookStrategy],
+  providers: [AuthService, JwtStrategy, FacebookStrategy, GoogleStrategy],
 })
 export class AuthModule {}

@@ -56,4 +56,16 @@ export class AuthController {
     });
     res.status(HttpStatus.OK).json({ token });
   }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
+    const payload: JwtPayload = { id };
+    const token = this.jwtService.sign(payload);
+    res.cookie('token', token, {
+      maxAge: +process.env.JWT_EXPIRES_IN,
+      httpOnly: true,
+    });
+    res.status(HttpStatus.OK).json({ token });
+  }
 }

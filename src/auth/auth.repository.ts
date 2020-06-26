@@ -48,16 +48,21 @@ export class AuthRepository extends Repository<User> {
     throw new UnauthorizedException('Password incorrect');
   }
 
-  async signUpWithFacebook(profile: Profile): Promise<User> {
+  async signUpWithThirdPartyProvider(profile: Profile): Promise<User> {
     const {
       id,
+      provider,
       name: { familyName, givenName },
       emails: [{ value: email }],
       photos: [{ value: photo }],
     } = profile;
 
     const user = new User();
-    user.facebookId = id;
+    if (provider === 'facebook') {
+      user.facebookId = id;
+    } else if (provider === 'google') {
+      user.googleId = id;
+    }
     user.email = email;
     user.username = email;
     user.firstName = familyName;
