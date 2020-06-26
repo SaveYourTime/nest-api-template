@@ -1,29 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { use, Profile } from 'passport';
-import * as FacebookTokenStrategy from 'passport-facebook-token';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Profile } from 'passport';
+import * as Strategy from 'passport-facebook-token';
 import { AuthRepository } from '../auth.repository';
+import { User } from '../../users/user.entity';
 
 @Injectable()
-export class FacebookStrategy {
+export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(private authRepository: AuthRepository) {
-    use(
-      new FacebookTokenStrategy(
-        {
-          clientID: process.env.FACEBOOK_APP_ID,
-          clientSecret: process.env.FACEBOOK_APP_SECRET,
-          fbGraphVersion: 'v7.0',
-        },
-        this.validate.bind(this),
-      ),
-    );
+    super({
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      fbGraphVersion: 'v7.0',
+    });
   }
 
-  private async validate(
+  async validate(
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-    done: (error: any, user?: any, info?: any) => void,
-  ): Promise<void> {
+  ): Promise<User> {
     const {
       id,
       emails: [{ value: email }],
@@ -31,21 +27,21 @@ export class FacebookStrategy {
 
     let user = await this.authRepository.findOne({ facebookId: id });
     if (user) {
-      return done(null, user);
+      return user;
     }
 
     user = await this.authRepository.findOne({ email });
     if (user) {
       user.facebookId = id;
       await user.save();
-      return done(null, user);
+      return user;
     }
 
     user = await this.authRepository.signUpWithFacebook(profile);
     if (user) {
-      return done(null, user);
+      return user;
     }
 
-    return done('Failed to login or signup with facebook');
+    throw new UnauthorizedException('Failed to login or signup with facebook');
   }
 }

@@ -46,7 +46,7 @@ export class AuthController {
   }
 
   @Get('facebook')
-  @UseGuards(AuthGuard('facebook-token'))
+  @UseGuards(AuthGuard('facebook'))
   signInWithFacebook(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
