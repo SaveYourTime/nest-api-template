@@ -9,7 +9,7 @@ import { User } from '../../users/user.entity';
 const cookieExtractor = (req: Request): string => req?.cookies?.token;
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
