@@ -18,6 +18,7 @@ import { Task } from '../tasks/task.entity';
 @Unique(['facebookId'])
 @Unique(['googleId'])
 @Unique(['lineId'])
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
