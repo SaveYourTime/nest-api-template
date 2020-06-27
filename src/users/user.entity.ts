@@ -47,6 +47,15 @@ export class User extends BaseEntity {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  phone?: string;
+
+  @Column({ nullable: true })
+  address?: string;
+
+  @Column({ type: 'date', nullable: true })
+  dateOfBirth?: Date;
+
   @ApiProperty({
     type: 'enum',
     enum: Gender,
