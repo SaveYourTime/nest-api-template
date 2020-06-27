@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskStatus } from './task-status.enum';
@@ -42,10 +43,11 @@ export class Task extends BaseEntity {
   deletedAt?: Date;
 
   @ManyToOne((type) => User, (user) => user.id, {
-    eager: false,
-    onUpdate: 'CASCADE',
     nullable: false,
+    onUpdate: 'CASCADE',
+    eager: false,
   })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column()

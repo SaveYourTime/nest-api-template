@@ -6,13 +6,18 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AuthRepository } from './auth.repository';
 import { UserRepository } from '../users/user.repository';
+import { ProviderRepository } from 'src/providers/provider.repository';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
 import { GoogleStrategy } from './strategy/google.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AuthRepository, UserRepository]),
+    TypeOrmModule.forFeature([
+      AuthRepository,
+      UserRepository,
+      ProviderRepository,
+    ]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,

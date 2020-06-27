@@ -7,36 +7,19 @@ import {
   UpdateDateColumn,
   Unique,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import * as bcrypt from 'bcryptjs';
-import { Gender } from './gender.enum';
+import { Auth } from '../auth/auth.entity';
 import { Task } from '../tasks/task.entity';
+import { Provider } from '../providers/provider.entity';
+import { Gender } from './gender.enum';
 
 @Entity()
-@Unique(['username'])
-@Unique(['facebookId'])
-@Unique(['googleId'])
-@Unique(['lineId'])
 @Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  username: string;
-
-  @Column({ nullable: true })
-  password?: string;
-
-  @Column({ nullable: true })
-  facebookId?: string;
-
-  @Column({ nullable: true })
-  googleId?: string;
-
-  @Column({ nullable: true })
-  lineId?: string;
 
   @Column({ nullable: true })
   firstName?: string;
@@ -74,11 +57,12 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @OneToOne((type) => Auth, (auth) => auth.user, { cascade: true })
+  auth: Auth;
+
+  @OneToMany((type) => Provider, (provider) => provider.user, { cascade: true })
+  provider: Provider[];
+
   @OneToMany((type) => Task, (task) => task.user, { eager: false })
   task: Task[];
-
-  async validatePassword(password: string): Promise<boolean> {
-    if (!this.password) return false;
-    return await bcrypt.compare(password, this.password);
-  }
 }

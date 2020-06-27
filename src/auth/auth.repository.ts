@@ -7,19 +7,25 @@ import { EntityRepository, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Profile } from 'passport';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { Auth } from './auth.entity';
 import { User } from '../users/user.entity';
+import { Provider } from '../providers/provider.entity';
+import { ProviderType } from '../providers/provider-type.enum';
 
-@EntityRepository(User)
-export class AuthRepository extends Repository<User> {
+@EntityRepository(Auth)
+export class AuthRepository extends Repository<Auth> {
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, password } = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const auth = new Auth();
+    auth.username = username;
+    auth.password = hashedPassword;
+
     const user = new User();
     user.email = username;
-    user.username = username;
-    user.password = hashedPassword;
+    user.auth = auth;
 
     try {
       await user.save();
@@ -42,7 +48,7 @@ export class AuthRepository extends Repository<User> {
 
     const valid = await user.validatePassword(password);
     if (user && valid) {
-      return user.id;
+      return user.userId;
     }
 
     throw new UnauthorizedException('Password incorrect');
@@ -51,23 +57,30 @@ export class AuthRepository extends Repository<User> {
   async signUpWithThirdPartyProvider(profile: Profile): Promise<User> {
     const {
       id,
-      provider,
+      provider: type,
       name: { familyName, givenName },
       emails: [{ value: email }],
       photos: [{ value: photo }],
     } = profile;
 
-    const user = new User();
-    if (provider === 'facebook') {
-      user.facebookId = id;
-    } else if (provider === 'google') {
-      user.googleId = id;
+    const auth = new Auth();
+    auth.username = email;
+
+    const provider = new Provider();
+    provider.providerId = id;
+    if (type === 'facebook') {
+      provider.type = ProviderType.FACEBOOK;
+    } else if (type === 'google') {
+      provider.type = ProviderType.GOOGLE;
     }
+
+    const user = new User();
     user.email = email;
-    user.username = email;
     user.firstName = familyName;
     user.lastName = givenName;
     user.photo = photo;
+    user.auth = auth;
+    user.provider = [...(user.provider ?? []), provider];
     await user.save();
     return user;
   }
