@@ -38,11 +38,6 @@ export class TasksService {
   }
 
   async delete(id: number, user: User): Promise<void> {
-    const { affected } = await this.taskRepository.delete({
-      id,
-      userId: user.id,
-    });
-    if (!affected)
-      throw new NotFoundException(`Task with ID: '${id}' not found.`);
+    await this.taskRepository.softDelete({ id, userId: user.id });
   }
 }
