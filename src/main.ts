@@ -22,7 +22,10 @@ const setupSwagger = (app: INestApplication): void => {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v1');
-  app.enableCors({ origin: process.env.ORIGIN });
+  app.enableCors({
+    origin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+    credentials: process.env.ACCESS_CONTROL_ALLOW_CREDENTIALS === 'true',
+  });
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalGuards(new RolesGuard(new Reflector()));
@@ -33,6 +36,8 @@ async function bootstrap() {
   const URL = await app.getUrl();
   logger.log(`Application is running on: ${URL}`);
   logger.log(`Swagger is running on: ${URL}/api`);
-  logger.log(`Accepting requests from origin: "${process.env.ORIGIN}"`);
+  logger.log(
+    `Accepting requests from origin: "${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}"`,
+  );
 }
 bootstrap();
