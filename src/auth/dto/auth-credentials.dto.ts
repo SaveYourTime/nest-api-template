@@ -13,8 +13,6 @@ export class AuthCredentialsDto {
   @IsEmail()
   @IsString()
   @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(20)
   username: string;
 
   @ApiProperty({ example: 'Aa123456' })
