@@ -8,7 +8,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  dropSchema: process.env.DB_DROP === 'true',
   synchronize: process.env.DB_SYNC === 'true',
+  entities: [__dirname + '/../**/*.entity.{js,ts}'],
   namingStrategy: new SnakeNamingStrategy(),
 };
