@@ -81,7 +81,16 @@ export class AuthRepository extends Repository<Auth> {
     user.photo = photo;
     user.auth = auth;
     user.provider = [...(user.provider ?? []), provider];
-    await user.save();
-    return user;
+
+    try {
+      await user.save();
+      return user;
+    } catch (error) {
+      if (error.errno === 1062) {
+        throw new ConflictException('User already exists');
+      } else {
+        throw new UnauthorizedException(`Failed to login with ${type}`);
+      }
+    }
   }
 }
