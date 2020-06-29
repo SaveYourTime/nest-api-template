@@ -4,7 +4,7 @@ import { ProviderType } from '../providers/provider-type.enum';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async findUserByProvider(id: number, type: ProviderType): Promise<User> {
+  async findUserByProvider(id: string, type: ProviderType): Promise<User> {
     const user = await this.createQueryBuilder('user')
       .innerJoinAndSelect('user.provider', 'provider')
       .where('provider.providerId = :id', { id })

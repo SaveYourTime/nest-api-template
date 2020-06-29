@@ -29,7 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const { id } = profile;
 
     let user = await this.userRepository.findUserByProvider(
-      +id,
+      id,
       ProviderType.GOOGLE,
     );
     if (user) {

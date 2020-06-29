@@ -28,7 +28,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     const { id } = profile;
 
     let user = await this.userRepository.findUserByProvider(
-      +id,
+      id,
       ProviderType.FACEBOOK,
     );
     if (user) {
