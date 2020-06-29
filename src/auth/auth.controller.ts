@@ -38,10 +38,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const token = await this.authService.signIn(authCredentialsDto);
-    res.cookie('token', token, {
-      maxAge: +process.env.JWT_EXPIRES_IN,
-      httpOnly: true,
-    });
+    this.setResponseJWTCookie(res, token);
     res.status(HttpStatus.OK).json({ token });
   }
 
@@ -50,10 +47,7 @@ export class AuthController {
   signInWithFacebook(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
-    res.cookie('token', token, {
-      maxAge: +process.env.JWT_EXPIRES_IN,
-      httpOnly: true,
-    });
+    this.setResponseJWTCookie(res, token);
     res.status(HttpStatus.OK).json({ token });
   }
 
@@ -62,10 +56,14 @@ export class AuthController {
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
+    this.setResponseJWTCookie(res, token);
+    res.redirect(process.env.WEB_URL);
+  }
+
+  private setResponseJWTCookie(res: Response, token: string): void {
     res.cookie('token', token, {
       maxAge: +process.env.JWT_EXPIRES_IN,
       httpOnly: true,
     });
-    res.status(HttpStatus.OK).json({ token });
   }
 }
