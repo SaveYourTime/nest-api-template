@@ -54,6 +54,9 @@ export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
+    if (!id) {
+      return res.redirect(`${process.env.WEB_URL}/error`);
+    }
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
