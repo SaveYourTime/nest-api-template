@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile } from 'passport';
 import * as Strategy from 'passport-facebook-token';
@@ -35,10 +35,11 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       return done(null, user);
     }
 
-    user = await this.authRepository.signUpWithThirdPartyProvider(profile);
-    if (user) {
-      return done(null, user);
+    try {
+      user = await this.authRepository.signUpWithThirdPartyProvider(profile);
+      done(null, user);
+    } catch (error) {
+      done(error);
     }
-    done(new UnauthorizedException());
   }
 }
