@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile } from 'passport';
-import { Strategy } from 'passport-google-oauth20';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { AuthRepository } from '../auth.repository';
 import { UserRepository } from '../../users/user.repository';
-import { User } from '../../users/user.entity';
 import { ProviderType } from '../../providers/provider-type.enum';
 
 @Injectable()
@@ -25,7 +24,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-  ): Promise<User> {
+    done: VerifyCallback,
+  ): Promise<void> {
     const { id } = profile;
 
     let user = await this.userRepository.findUserByProvider(
@@ -33,10 +33,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       ProviderType.GOOGLE,
     );
     if (user) {
-      return user;
+      return done(null, user);
     }
 
-    user = await this.authRepository.signUpWithThirdPartyProvider(profile);
-    return user;
+    try {
+      user = await this.authRepository.signUpWithThirdPartyProvider(profile);
+      done(null, user);
+    } catch (error) {
+      // We pass an empty object here, to prevent passport automatically throw an UnauthorizedException for us
+      // We are going to handle this exception by ourself in AuthController
+      done(null, {});
+    }
   }
 }

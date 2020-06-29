@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile } from 'passport';
 import * as Strategy from 'passport-facebook-token';
 import { AuthRepository } from '../auth.repository';
 import { UserRepository } from '../../users/user.repository';
-import { User } from '../../users/user.entity';
 import { ProviderType } from '../../providers/provider-type.enum';
 
 @Injectable()
@@ -24,7 +23,8 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-  ): Promise<User> {
+    done: (error: any, user?: any, info?: any) => void,
+  ): Promise<void> {
     const { id } = profile;
 
     let user = await this.userRepository.findUserByProvider(
@@ -32,10 +32,13 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       ProviderType.FACEBOOK,
     );
     if (user) {
-      return user;
+      return done(null, user);
     }
 
     user = await this.authRepository.signUpWithThirdPartyProvider(profile);
-    return user;
+    if (user) {
+      return done(null, user);
+    }
+    done(new UnauthorizedException());
   }
 }
