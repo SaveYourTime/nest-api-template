@@ -68,14 +68,11 @@ export class LineGuard implements CanActivate {
     };
     try {
       user = await this.authRepository.signUpWithThirdPartyProvider(profile);
+      request.user = user;
+      return true;
     } catch (error) {
       this.redirectToErrorPage(response);
     }
-    if (user) {
-      request.user = user;
-      return true;
-    }
-    this.redirectToErrorPage(response);
   }
 
   private async issueToken() {
