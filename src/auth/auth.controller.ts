@@ -14,10 +14,10 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { GetUser } from './get-user.decorator';
-import { JwtPayload } from './jwt-payload.interface';
-import { GoogleGuard } from './google.guard';
-import { LineGuard } from './line.guard';
+import { GetUser } from './decorators/get-user.decorator';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { GoogleGuard } from './guards/google.guard';
+import { LineGuard } from './guards/line.guard';
 
 @ApiTags('auth')
 @Controller('auth')

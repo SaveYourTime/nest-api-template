@@ -6,7 +6,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import { RolesGuard } from './auth/roles.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 const setupSwagger = (app: INestApplication): void => {
   const options = new DocumentBuilder()

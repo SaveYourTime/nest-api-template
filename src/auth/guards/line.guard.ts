@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { AxiosInstance } from 'axios';
 import { Request, Response } from 'express';
-import { AuthRepository } from './auth.repository';
-import { UserRepository } from '../users/user.repository';
-import { ProviderType } from '../providers/provider-type.enum';
-import { LineToken } from './line-token.interface';
+import { AuthRepository } from '../auth.repository';
+import { UserRepository } from '../../users/user.repository';
+import { ProviderType } from '../../providers/provider-type.enum';
+import { LineToken } from '../interfaces/line-token.interface';
 
 @Injectable()
 export class LineGuard implements CanActivate {

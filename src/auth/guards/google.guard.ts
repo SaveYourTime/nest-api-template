@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import { google } from 'googleapis';
-import { AuthRepository } from './auth.repository';
-import { UserRepository } from '../users/user.repository';
-import { ProviderType } from '../providers/provider-type.enum';
+import { AuthRepository } from '../auth.repository';
+import { UserRepository } from '../../users/user.repository';
+import { ProviderType } from '../../providers/provider-type.enum';
 
 // We authenticate with lower level google api here instead of using passport-google-oauth20
 // Due to the lack of passport-oauth2 supported, when authenticate user's token from google
