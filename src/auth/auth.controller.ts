@@ -17,6 +17,7 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { GetUser } from './get-user.decorator';
 import { JwtPayload } from './jwt-payload.interface';
 import { GoogleGuard } from './google.guard';
+import { LineGuard } from './line.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -78,11 +79,23 @@ export class AuthController {
 
   @Get('google/login')
   @UseGuards(GoogleGuard)
-  async code(@GetUser('id') id: number, @Res() res: Response): Promise<void> {
+  signInWithGoogleAlternative(
+    @GetUser('id') id: number,
+    @Res() res: Response,
+  ): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
     res.status(HttpStatus.OK).json({ token });
+  }
+
+  @Get('line')
+  @UseGuards(LineGuard)
+  signInWithLine(@GetUser('id') id: number, @Res() res: Response): void {
+    const payload: JwtPayload = { id };
+    const token = this.jwtService.sign(payload);
+    this.setResponseJWTCookie(res, token);
+    res.redirect(process.env.WEB_URL);
   }
 
   private setResponseJWTCookie(res: Response, token: string): void {

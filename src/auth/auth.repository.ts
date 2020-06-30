@@ -68,11 +68,7 @@ export class AuthRepository extends Repository<Auth> {
 
     const provider = new Provider();
     provider.providerId = id;
-    if (type === 'facebook') {
-      provider.type = ProviderType.FACEBOOK;
-    } else if (type === 'google') {
-      provider.type = ProviderType.GOOGLE;
-    }
+    provider.type = ProviderType[type.toUpperCase()];
 
     const user = new User();
     user.email = email;
