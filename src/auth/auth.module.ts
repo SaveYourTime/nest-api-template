@@ -9,7 +9,9 @@ import { UserRepository } from '../users/user.repository';
 import { ProviderRepository } from 'src/providers/provider.repository';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
+import { FacebookConnectStrategy } from './strategy/facebook-connect.strategy';
 import { GoogleStrategy } from './strategy/google.strategy';
+import { GoogleConnectStrategy } from './strategy/google-connect.strategy';
 
 @Module({
   imports: [
@@ -24,8 +26,22 @@ import { GoogleStrategy } from './strategy/google.strategy';
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
-  exports: [PassportModule, JwtStrategy, FacebookStrategy, GoogleStrategy],
+  exports: [
+    PassportModule,
+    JwtStrategy,
+    FacebookStrategy,
+    FacebookConnectStrategy,
+    GoogleStrategy,
+    GoogleConnectStrategy,
+  ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, FacebookStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    FacebookStrategy,
+    FacebookConnectStrategy,
+    GoogleStrategy,
+    GoogleConnectStrategy,
+  ],
 })
 export class AuthModule {}

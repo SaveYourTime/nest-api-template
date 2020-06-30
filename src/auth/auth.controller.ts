@@ -52,6 +52,12 @@ export class AuthController {
     res.status(HttpStatus.OK).json({ token });
   }
 
+  @Get('facebook/connect')
+  @UseGuards(AuthGuard('jwt'), AuthGuard('facebook-connect'))
+  connectFacebookAccount(): void {
+    return null;
+  }
+
   @Get('google')
   @UseGuards(AuthGuard('google'))
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
@@ -62,6 +68,12 @@ export class AuthController {
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
     res.redirect(process.env.WEB_URL);
+  }
+
+  @Get('google/connect')
+  @UseGuards(AuthGuard('jwt'), AuthGuard('google-connect'))
+  connectGoogleAccount(): void {
+    return null;
   }
 
   @Get('google/login')

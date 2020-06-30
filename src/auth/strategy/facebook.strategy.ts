@@ -16,7 +16,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       fbGraphVersion: 'v7.0',
-    });
+    } as Strategy.StrategyOptions);
   }
 
   async validate(
