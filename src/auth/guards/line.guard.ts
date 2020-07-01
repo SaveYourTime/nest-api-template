@@ -34,7 +34,10 @@ export class LineGuard implements CanActivate {
     const response: Response = context.switchToHttp().getResponse();
 
     const { code } = request.query;
-    if (!code) this.redirectToErrorPage(response);
+    if (!code) {
+      this.redirectToErrorPage(response);
+      return false;
+    }
     this.code = code as string;
 
     try {
@@ -43,6 +46,7 @@ export class LineGuard implements CanActivate {
       await this.getUserProfile();
     } catch (error) {
       this.redirectToErrorPage(response);
+      return false;
     }
 
     let user = await this.userRepository.findUserByProvider(
@@ -72,6 +76,7 @@ export class LineGuard implements CanActivate {
       return true;
     } catch (error) {
       this.redirectToErrorPage(response);
+      return false;
     }
   }
 
