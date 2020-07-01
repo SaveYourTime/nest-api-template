@@ -26,4 +26,5 @@ module.exports = {
       { argsIgnorePattern: '^type$' },
     ],
   },
+  ignorePatterns: ['.eslintrc.js', '/src/config/ormconfig.js'],
 };

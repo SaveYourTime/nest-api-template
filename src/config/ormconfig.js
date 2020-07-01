@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 // This config file is for seeding data only
 const SnakeNamingStrategy = require('typeorm-naming-strategies')
   .SnakeNamingStrategy;
@@ -10,8 +9,8 @@ module.exports = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [__dirname + '/src/**/*.entity.{js,ts}'],
-  seeds: [__dirname + '/src/database/seeds/**/*{.ts,.js}'],
-  factories: [__dirname + '/src/database/factories/**/*{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  seeds: [__dirname + '/../database/seeds/**/*{.ts,.js}'],
+  factories: [__dirname + '/../database/factories/**/*{.ts,.js}'],
   namingStrategy: new SnakeNamingStrategy(),
 };
