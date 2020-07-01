@@ -9,7 +9,6 @@ interface Context {
 define(Auth, (faker: typeof Faker, context: Context) => {
   const { id } = context;
 
-  faker.locale = 'zh_TW';
   const username = faker.internet.exampleEmail();
   const password = faker.internet.password();
 

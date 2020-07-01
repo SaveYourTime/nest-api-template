@@ -10,7 +10,6 @@ interface Context {
 define(Task, (faker: typeof Faker, context: Context) => {
   const { id } = context;
 
-  faker.locale = 'zh_TW';
   const title = faker.lorem.words();
   const description = faker.lorem.paragraph();
   const status = faker.random.objectElement<TaskStatus>(TaskStatus);

@@ -4,7 +4,6 @@ import { User } from '../../users/user.entity';
 import { Gender } from '../../users/gender.enum';
 
 define(User, (faker: typeof Faker) => {
-  faker.locale = 'zh_TW';
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
   const email = faker.internet.exampleEmail(firstName, lastName);
