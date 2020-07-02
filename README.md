@@ -1,75 +1,112 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" />
 </p>
-
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
   
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<p align="center">A performance oriented Nest.js application template for building efficient and scalable server-side applications, with TypeScript, TypeORM and MySQL.</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This template makes it easier to get up and running with a `well-structured` Nest.js and TypeScript application.
 
-## Installation
+## Getting Started
 
-```bash
-$ npm install
-```
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-## Running the app
+### Prerequisites
 
-```bash
-# development
-$ npm run start
+1. Clone the project `git clone https://github.com/SaveYourTime/nest-api-template.git`
+2. Install dependencies (we use `yarn`)
+3. Create a `.env` file in the root like the `.env.example` file.
 
-# watch mode
-$ npm run start:dev
+> ⚠️ Ensure you have setup the `.env` file, before starting the server.
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
+### Installation
 
 ```bash
-# unit tests
-$ npm run test
+# clone and install dependencies
+git clone https://github.com/SaveYourTime/nest-api-template.git
+cd nest-api-template
+yarn
 
-# e2e tests
-$ npm run test:e2e
+# Run in development and serve at localhost:3000
+yarn start:dev
 
-# test coverage
-$ npm run test:cov
+# build for production
+yarn build
+
+# Run in production and serve at localhost:3000
+yarn start
 ```
 
-## Support
+### Seeds
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+For seed data just run the following comand. This is helpful in dev for making fake user.
 
-## Stay in touch
+```
+yarn seed:run
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Features
 
-## License
+`nest-api-template` provides a lot of features out of the box. Here's an overview of the included components and tools.
 
-  Nest is [MIT licensed](LICENSE).
+- **Nest.js** - A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- **TypeScript** - Superset of JavaScript which primarily provides optional static typing, classes and interfaces.
+- **ESLint** - The pluggable linting utility. Find and fix problems in your JavaScript code.
+- **Jest** - A delightful JavaScript Testing Framework with a focus on simplicity.
+- **Prettier** - An opinionated code formatter. Enforces a consistent style by parsing your code and re-printing it with its own rules.
+- **husky** - Git hooks 🎣prevent bad git commit and git push.
+- **lint-staged** - Run linters against staged git files and don't let 💩slip into your code base.
+- **TypeORM** - The most mature Object Relational Mapper (ORM) available in the node.js world written in TypeScript.
+- **typeorm-seeding** - A delightful way to seed test data into your database.
+- **Swagger** - Swagger takes the manual work out of API documentation, with a range of solutions for generating, visualizing, and maintaining API docs.
+- **Passport** - Simple, unobtrusive authentication middleware for Node.js. Support `Local`, `Facebook`, `Google` and `LINE` login in this template.
+
+## Pre-Commit Hook
+
+We add `hasky` and `lint-staged` for linting and formatting your code before commit. That can maybe take time. ⏳
+
+## Teck Stack
+
+- Nest.js
+- MySQL
+- TypeScript
+- TypeORM
+- Authenticate with cookie based JWT
+- Passport with Local, Facebook, Google, LINE Login
+
+---
+
+## Folder Structure
+
+#### src
+
+##### `src/auth`, `src/providers`, `src/tasks`, `src/users`, `src/[feature]`
+
+Having `module`, `controller`, `service`, `entity`, `repository` inside.
+
+> naming these files like this: `users.module.ts`, `users.controller.ts`, `users.service.ts`, `user.entity.ts`, `user.repository.ts`
+
+- **Modules** organizes code relevant for a specific `feature`, keeping `code organized` and establishing clear boundaries.
+- **Controllers** are responsible for handling `incoming requests` and `returning responses` to the client.
+- **Services** are responsible for `data storage` and retrieval, and is designed to be used by the Controller.
+
+##### `src/config`
+
+The typeorm configuration file for creating a new connection.
+
+##### `src/database`
+
+Here's where we create a factory and a seed script.
+
+##### `src/app.module.ts`
+
+The root module of the application.
+
+##### `src/main.ts`
+
+The entry file of the application which uses the core function `NestFactory` to create a Nest application instance.
+
+##### `.env`
+
+A file for storing environment-specific variables `NAME=VALUE`, separated by new lines.
