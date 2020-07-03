@@ -5,7 +5,6 @@ import {
   Res,
   Body,
   HttpStatus,
-  ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -28,15 +27,13 @@ export class AuthController {
   ) {}
 
   @Post('signup')
-  signUp(
-    @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
-  ): Promise<void> {
+  signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
 
   @Post('signin')
   async signIn(
-    @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
+    @Body() authCredentialsDto: AuthCredentialsDto,
     @Res() res: Response,
   ): Promise<void> {
     const token = await this.authService.signIn(authCredentialsDto);

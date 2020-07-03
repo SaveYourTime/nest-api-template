@@ -9,8 +9,6 @@ import {
   Patch,
   Query,
   ParseIntPipe,
-  ValidationPipe,
-  UsePipes,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -33,7 +31,6 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  @UsePipes(ValidationPipe)
   findAll(
     @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
@@ -51,7 +48,6 @@ export class TasksController {
   }
 
   @Post()
-  @UsePipes(ValidationPipe)
   create(
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,
