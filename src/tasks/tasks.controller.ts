@@ -1,18 +1,29 @@
 import {
   Controller,
+  Res,
   Get,
   Post,
   Body,
+  Query,
   Param,
+  Patch,
   Delete,
   HttpCode,
-  Patch,
-  Query,
   ParseIntPipe,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  FileInterceptor,
+  FilesInterceptor,
+  FileFieldsInterceptor,
+  AnyFilesInterceptor,
+} from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags, ApiParam, ApiBody } from '@nestjs/swagger';
+import { Response } from 'express';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -53,6 +64,47 @@ export class TasksController {
     @GetUser() user: User,
   ): Promise<Task> {
     return this.tasksService.create(createTaskDto, user);
+  }
+
+  @Get('file/:name')
+  getFile(@Param('name') name: string, @Res() res: Response): void {
+    res.sendFile(name, { root: process.env.UPLOAD_FILE_PATH });
+  }
+
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadFile(@UploadedFile() file: Express.Multer.File): Express.Multer.File {
+    return file;
+  }
+
+  @Post('files')
+  @UseInterceptors(FilesInterceptor('files', 3))
+  uploadFiles(
+    @UploadedFiles() files: Express.Multer.File[],
+  ): Express.Multer.File[] {
+    return files;
+  }
+
+  @Post('files/fields')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'avatar' }, { name: 'background' }]),
+  )
+  uploadFilesByFields(
+    @UploadedFiles()
+    files: {
+      avatar: Express.Multer.File[];
+      background: Express.Multer.File[];
+    },
+  ): { avatar: Express.Multer.File[]; background: Express.Multer.File[] } {
+    return files;
+  }
+
+  @Post('files/any')
+  @UseInterceptors(AnyFilesInterceptor())
+  uploadAnyFiles(
+    @UploadedFiles() files: Express.Multer.File[],
+  ): Express.Multer.File[] {
+    return files;
   }
 
   @Patch(':id/status')
