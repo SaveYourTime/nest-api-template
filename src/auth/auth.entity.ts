@@ -10,6 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Exclude } from 'class-transformer';
 import { User } from '../users/user.entity';
 
 @Entity()
@@ -21,6 +22,7 @@ export class Auth extends BaseEntity {
   @Column()
   username: string;
 
+  @Exclude()
   @Column({ nullable: true })
   password?: string;
 

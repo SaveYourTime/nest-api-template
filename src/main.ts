@@ -1,7 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 import { NestFactory, Reflector } from '@nestjs/core';
-import { Logger, INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  Logger,
+  ValidationPipe,
+  INestApplication,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
@@ -30,6 +35,8 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards(new RolesGuard(new Reflector()));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
+
   setupSwagger(app);
   await app.listen(process.env.PORT);
 
