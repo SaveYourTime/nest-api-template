@@ -14,6 +14,7 @@ import { Auth } from '../auth/auth.entity';
 import { Task } from '../tasks/task.entity';
 import { Provider } from '../providers/provider.entity';
 import { Gender } from './gender.enum';
+import { Expose } from 'class-transformer';
 
 @Entity()
 @Unique(['email'])
@@ -65,4 +66,15 @@ export class User extends BaseEntity {
 
   @OneToMany((type) => Task, (task) => task.user, { eager: false })
   task: Task[];
+
+  @Expose()
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+  @Expose()
+  get age(): number {
+    if (!this.dateOfBirth) return null;
+    return new Date().getFullYear() - new Date(this.dateOfBirth).getFullYear();
+  }
 }
