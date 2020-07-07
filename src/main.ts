@@ -34,8 +34,8 @@ async function bootstrap() {
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalGuards(new RolesGuard(new Reflector()));
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
+  app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   setupSwagger(app);
   await app.listen(process.env.PORT);
