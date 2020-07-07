@@ -9,12 +9,11 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { Auth } from '../auth/auth.entity';
 import { Task } from '../tasks/task.entity';
 import { Provider } from '../providers/provider.entity';
 import { Gender } from './gender.enum';
-import { Expose } from 'class-transformer';
 
 @Entity()
 @Unique(['email'])
@@ -40,12 +39,6 @@ export class User extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   dateOfBirth?: Date;
 
-  @ApiProperty({
-    type: 'enum',
-    enum: Gender,
-    nullable: true,
-    description: 'The gender of the user',
-  })
   @Column({ type: 'enum', enum: Gender, nullable: true })
   gender?: Gender;
 
@@ -69,6 +62,7 @@ export class User extends BaseEntity {
 
   @Expose()
   get fullName(): string {
+    if (!this.firstName || !this.lastName) return null;
     return `${this.firstName} ${this.lastName}`;
   }
 

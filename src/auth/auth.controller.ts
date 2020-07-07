@@ -7,7 +7,13 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiQuery,
+  ApiConflictResponse,
+  ApiForbiddenResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
@@ -27,11 +33,13 @@ export class AuthController {
   ) {}
 
   @Post('signup')
+  @ApiConflictResponse()
   signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
 
   @Post('signin')
+  @ApiUnauthorizedResponse()
   async signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
     @Res() res: Response,
@@ -43,6 +51,9 @@ export class AuthController {
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
+  @ApiQuery({ name: 'access_token', type: 'string' })
+  @ApiConflictResponse()
+  @ApiUnauthorizedResponse()
   signInWithFacebook(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
@@ -52,12 +63,17 @@ export class AuthController {
 
   @Get('facebook/connect')
   @UseGuards(AuthGuard('jwt'), AuthGuard('facebook-connect'))
+  @ApiQuery({ name: 'access_token', type: 'string' })
+  @ApiForbiddenResponse()
   connectFacebookAccount(): void {
     return null;
   }
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
+  @ApiQuery({ name: 'code', type: 'string' })
+  @ApiConflictResponse()
+  @ApiUnauthorizedResponse()
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
     if (!id) {
       return res.redirect(`${process.env.WEB_URL}/error`);
@@ -70,12 +86,18 @@ export class AuthController {
 
   @Get('google/connect')
   @UseGuards(AuthGuard('jwt'), AuthGuard('google-connect'))
+  @ApiQuery({ name: 'code', type: 'string' })
+  @ApiForbiddenResponse()
   connectGoogleAccount(): void {
     return null;
   }
 
   @Get('google/login')
   @UseGuards(GoogleGuard)
+  @ApiQuery({ name: 'code', type: 'string' })
+  @ApiConflictResponse()
+  @ApiForbiddenResponse()
+  @ApiUnauthorizedResponse()
   signInWithGoogleAlternative(
     @GetUser('id') id: number,
     @Res() res: Response,
@@ -88,6 +110,8 @@ export class AuthController {
 
   @Get('line')
   @UseGuards(LineGuard)
+  @ApiQuery({ name: 'code', type: 'string' })
+  @ApiForbiddenResponse()
   signInWithLine(@GetUser('id') id: number, @Res() res: Response): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);

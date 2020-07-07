@@ -19,6 +19,7 @@ const setupSwagger = (app: INestApplication): void => {
     .setDescription('The tasks API description')
     .setVersion('1.0')
     .addBearerAuth()
+    .addCookieAuth('token')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

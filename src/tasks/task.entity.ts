@@ -9,7 +9,6 @@ import {
   DeleteDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
 import { TaskStatus } from './task-status.enum';
 import { User } from '../users/user.entity';
 
@@ -24,14 +23,8 @@ export class Task extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @ApiProperty({
-    type: 'enum',
-    enum: TaskStatus,
-    default: TaskStatus.OPEN,
-    description: 'The status of a task',
-  })
   @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.OPEN })
-  status: TaskStatus;
+  status: TaskStatus = TaskStatus.OPEN;
 
   @CreateDateColumn()
   createdAt: Date;
