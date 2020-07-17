@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: task-api
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    networks:
+      - backend
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      TZ: Asia/Taipei
+    # command: yarn start:dev
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.2
+    container_name: task-phpmyadmin
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - '9100:80'
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT}
+      TZ: Asia/Taipei
+  mysql:
+    image: mysql:8.0.21
+    container_name: task-mysql
+    command:
+      [
+        'mysqld',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-authentication-plugin=mysql_native_password',
+      ]
+    restart: always
+    networks:
+      - backend
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    volumes:
+      - data-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_TCP_PORT: ${DB_PORT}
+      TZ: Asia/Taipei
+networks:
+  backend:
+volumes:
+  data-volume:
