@@ -1,4 +1,5 @@
-FROM node:12-alpine
+# Build
+FROM node:12 AS builder
 
 WORKDIR /usr/src/app
 
@@ -9,6 +10,11 @@ RUN yarn
 COPY . .
 RUN yarn build
 
-EXPOSE 3000
+# Run
+FROM node:12-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app .
 
 CMD ["yarn", "start:prod"]
