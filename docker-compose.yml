@@ -28,7 +28,7 @@ services:
     networks:
       - backend
     ports:
-      - '9100:80'
+      - '9000:80'
     environment:
       PMA_HOST: ${DB_HOST}
       PMA_PORT: ${DB_PORT}
