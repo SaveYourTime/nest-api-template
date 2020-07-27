@@ -1,5 +1,5 @@
 # Build
-FROM node:12 AS builder
+FROM node:12
 
 WORKDIR /usr/src/app
 
@@ -15,8 +15,8 @@ FROM node:12-alpine
 
 WORKDIR /usr/src/app
 
-COPY --from=builder /usr/src/app .
+COPY --from=0 /usr/src/app .
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["yarn", "start:prod"]
