@@ -13,6 +13,12 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 
+const {
+  PORT = 3000,
+  ACCESS_CONTROL_ALLOW_ORIGIN = '*',
+  ACCESS_CONTROL_ALLOW_CREDENTIALS = 'true',
+} = process.env;
+
 const setupSwagger = (app: INestApplication): void => {
   const options = new DocumentBuilder()
     .setTitle('Tasks Managament')
@@ -29,8 +35,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v1');
   app.enableCors({
-    origin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-    credentials: process.env.ACCESS_CONTROL_ALLOW_CREDENTIALS === 'true',
+    origin: ACCESS_CONTROL_ALLOW_ORIGIN,
+    credentials: ACCESS_CONTROL_ALLOW_CREDENTIALS === 'true',
   });
   app.use(helmet());
   app.use(cookieParser());
@@ -39,14 +45,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   setupSwagger(app);
-  await app.listen(process.env.PORT);
+  await app.listen(PORT);
 
   const logger = new Logger('bootstrap');
   const URL = await app.getUrl();
   logger.log(`Application is running on: ${URL}`);
   logger.log(`Swagger is running on: ${URL}/api`);
   logger.log(
-    `Accepting requests from origin: "${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}"`,
+    `Accepting requests from origin: "${ACCESS_CONTROL_ALLOW_ORIGIN}"`,
   );
 }
 bootstrap();
