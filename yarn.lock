@@ -5769,7 +5769,7 @@ passport-oauth2@1.x.x:
     uid2 "0.0.x"
     utils-merge "1.x.x"
 
-passport-oauth@1.0.0:
+passport-oauth@1.0.0, passport-oauth@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-oauth/-/passport-oauth-1.0.0.tgz#90aff63387540f02089af28cdad39ea7f80d77df"
   integrity sha1-kK/2M4dUDwIImvKM2tOep/gNd98=
@@ -5781,6 +5781,14 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
   integrity sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
+
+passport-token-google2@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/passport-token-google2/-/passport-token-google2-0.1.4.tgz#ff4ba5762f197e2c09bc04785b34f654e6eddd17"
+  integrity sha512-TfqMwD2ucwixVt4ErZfwEHTU2kYZ1pyAbjlNJuWhfaHY3RiXN8c9xUdltu0R7uBFlBYjV8/B6j20QC71V12w/g==
+  dependencies:
+    passport-oauth "^1.0.0"
+    pkginfo "0.2.x"
 
 passport@^0.4.1:
   version "0.4.1"
@@ -5915,6 +5923,11 @@ pkg-dir@^4.2.0:
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
+
+pkginfo@0.2.x:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.2.3.tgz#7239c42a5ef6c30b8f328439d9b9ff71042490f8"
+  integrity sha1-cjnEKl72wwuPMoQ52bn/cQQkkPg=
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"
