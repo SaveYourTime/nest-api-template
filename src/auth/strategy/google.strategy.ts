@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { Profile } from 'passport';
 import { Strategy } from 'passport-token-google2';
-import { Profile } from '../interfaces/profile.interface';
 import { AuthRepository } from '../auth.repository';
 import { UserRepository } from '../../users/user.repository';
 import { ProviderType } from '../../providers/provider-type.enum';
@@ -21,7 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: Profile,
+    profile: Profile & { _json?: { picture?: string } },
     done: (error: any, user?: any, info?: any) => void,
   ): Promise<void> {
     const { id } = profile;
