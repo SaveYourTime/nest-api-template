@@ -21,7 +21,6 @@ import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { GetUser } from './decorators/get-user.decorator';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { GoogleGuard } from './guards/google.guard';
 import { LineGuard } from './guards/line.guard';
 
 @ApiTags('auth')
@@ -71,41 +70,22 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  @ApiQuery({ name: 'code', type: 'string' })
+  @ApiQuery({ name: 'access_token', type: 'string' })
   @ApiConflictResponse()
   @ApiUnauthorizedResponse()
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
-    if (!id) {
-      return res.redirect(`${process.env.WEB_URL}/error`);
-    }
-    const payload: JwtPayload = { id };
-    const token = this.jwtService.sign(payload);
-    this.setResponseJWTCookie(res, token);
-    res.redirect(process.env.WEB_URL);
-  }
-
-  @Get('google/connect')
-  @UseGuards(AuthGuard('jwt'), AuthGuard('google-connect'))
-  @ApiQuery({ name: 'code', type: 'string' })
-  @ApiForbiddenResponse()
-  connectGoogleAccount(): void {
-    return null;
-  }
-
-  @Get('google/login')
-  @UseGuards(GoogleGuard)
-  @ApiQuery({ name: 'code', type: 'string' })
-  @ApiConflictResponse()
-  @ApiForbiddenResponse()
-  @ApiUnauthorizedResponse()
-  signInWithGoogleAlternative(
-    @GetUser('id') id: number,
-    @Res() res: Response,
-  ): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
     res.status(HttpStatus.OK).json({ token });
+  }
+
+  @Get('google/connect')
+  @UseGuards(AuthGuard('jwt'), AuthGuard('google-connect'))
+  @ApiQuery({ name: 'access_token', type: 'string' })
+  @ApiForbiddenResponse()
+  connectGoogleAccount(): void {
+    return null;
   }
 
   @Get('line')

@@ -2,11 +2,7 @@ import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { Profile } from 'passport';
-import {
-  Strategy,
-  StrategyOptionsWithRequest,
-  VerifyCallback,
-} from 'passport-google-oauth20';
+import { Strategy } from 'passport-token-google2';
 import { UserRepository } from '../../users/user.repository';
 import { ProviderRepository } from '../../providers/provider.repository';
 import { ProviderType } from '../../providers/provider-type.enum';
@@ -24,10 +20,8 @@ export class GoogleConnectStrategy extends PassportStrategy(
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      scope: ['profile', 'email'],
       passReqToCallback: true,
-    } as StrategyOptionsWithRequest);
+    });
   }
 
   async validate(
@@ -35,7 +29,7 @@ export class GoogleConnectStrategy extends PassportStrategy(
     accessToken: string,
     refreshToken: string,
     profile: Profile,
-    done: VerifyCallback,
+    done: (error: any, user?: any, info?: any) => void,
   ): Promise<void> {
     const user = req.user as User;
     if (!user) {
