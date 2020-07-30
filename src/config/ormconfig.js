@@ -4,11 +4,11 @@ const SnakeNamingStrategy = require('typeorm-naming-strategies')
 
 module.exports = {
   type: 'mysql',
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: process.env.RDS_HOSTNAME,
+  port: process.env.RDS_PORT,
+  username: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  database: process.env.RDS_DB_NAME,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   seeds: [__dirname + '/../database/seeds/**/*{.ts,.js}'],
   factories: [__dirname + '/../database/factories/**/*{.ts,.js}'],
