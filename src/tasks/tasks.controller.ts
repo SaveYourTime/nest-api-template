@@ -56,28 +56,19 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  findAll(
-    @Query() filterDto: GetTasksFilterDto,
-    @GetUser() user: User,
-  ): Promise<Task[]> {
+  findAll(@Query() filterDto: GetTasksFilterDto, @GetUser() user: User): Promise<Task[]> {
     return this.tasksService.findAll(filterDto, user);
   }
 
   @Get(':id')
   @ApiParam({ name: 'id', example: 1 })
   @ApiNotFoundResponse()
-  findOne(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<Task> {
+  findOne(@Param('id', ParseIntPipe) id: number, @GetUser() user: User): Promise<Task> {
     return this.tasksService.findOne(id, user);
   }
 
   @Post()
-  create(
-    @Body() createTaskDto: CreateTaskDto,
-    @GetUser() user: User,
-  ): Promise<Task> {
+  create(@Body() createTaskDto: CreateTaskDto, @GetUser() user: User): Promise<Task> {
     return this.tasksService.create(createTaskDto, user);
   }
 
@@ -104,10 +95,7 @@ export class TasksController {
   @Roles('admin')
   @ApiParam({ name: 'id', example: 1 })
   @HttpCode(204)
-  delete(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<void> {
+  delete(@Param('id', ParseIntPipe) id: number, @GetUser() user: User): Promise<void> {
     return this.tasksService.delete(id, user);
   }
 
@@ -138,16 +126,12 @@ export class TasksController {
       properties: { files: { type: 'string', format: 'binary' } },
     },
   })
-  uploadFiles(
-    @UploadedFiles() files: Express.Multer.File[],
-  ): Express.Multer.File[] {
+  uploadFiles(@UploadedFiles() files: Express.Multer.File[]): Express.Multer.File[] {
     return files;
   }
 
   @Post('files/fields')
-  @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'avatar' }, { name: 'background' }]),
-  )
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'avatar' }, { name: 'background' }]))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -180,9 +164,7 @@ export class TasksController {
       },
     },
   })
-  uploadAnyFiles(
-    @UploadedFiles() files: Express.Multer.File[],
-  ): Express.Multer.File[] {
+  uploadAnyFiles(@UploadedFiles() files: Express.Multer.File[]): Express.Multer.File[] {
     return files;
   }
 }

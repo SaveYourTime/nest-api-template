@@ -9,10 +9,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 import { User } from '../../users/user.entity';
 
 @Injectable()
-export class GoogleConnectStrategy extends PassportStrategy(
-  Strategy,
-  'google-connect',
-) {
+export class GoogleConnectStrategy extends PassportStrategy(Strategy, 'google-connect') {
   constructor(
     private userRepository: UserRepository,
     private providerRepository: ProviderRepository,
@@ -38,27 +35,18 @@ export class GoogleConnectStrategy extends PassportStrategy(
 
     const { id } = profile;
 
-    const providerUser = await this.userRepository.findUserByProvider(
-      id,
-      ProviderType.GOOGLE,
-    );
+    const providerUser = await this.userRepository.findUserByProvider(id, ProviderType.GOOGLE);
     if (providerUser) {
       if (providerUser.id === user.id) {
         return done(null, user);
       }
       return done(
-        new ForbiddenException(
-          'User already connected to this google with another acoount',
-        ),
+        new ForbiddenException('User already connected to this google with another acoount'),
       );
     }
 
     try {
-      await this.providerRepository.createProviderByUserId(
-        id,
-        ProviderType.GOOGLE,
-        user.id,
-      );
+      await this.providerRepository.createProviderByUserId(id, ProviderType.GOOGLE, user.id);
       done(null, user);
     } catch (error) {
       done(error);

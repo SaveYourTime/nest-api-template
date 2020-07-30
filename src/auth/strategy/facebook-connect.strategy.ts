@@ -9,10 +9,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 import { User } from '../../users/user.entity';
 
 @Injectable()
-export class FacebookConnectStrategy extends PassportStrategy(
-  Strategy,
-  'facebook-connect',
-) {
+export class FacebookConnectStrategy extends PassportStrategy(Strategy, 'facebook-connect') {
   constructor(
     private userRepository: UserRepository,
     private providerRepository: ProviderRepository,
@@ -39,27 +36,18 @@ export class FacebookConnectStrategy extends PassportStrategy(
 
     const { id } = profile;
 
-    const facebookUser = await this.userRepository.findUserByProvider(
-      id,
-      ProviderType.FACEBOOK,
-    );
+    const facebookUser = await this.userRepository.findUserByProvider(id, ProviderType.FACEBOOK);
     if (facebookUser) {
       if (facebookUser.id === user.id) {
         return done(null, user);
       }
       return done(
-        new ForbiddenException(
-          'User already connected to this facebook with another acoount',
-        ),
+        new ForbiddenException('User already connected to this facebook with another acoount'),
       );
     }
 
     try {
-      await this.providerRepository.createProviderByUserId(
-        id,
-        ProviderType.FACEBOOK,
-        user.id,
-      );
+      await this.providerRepository.createProviderByUserId(id, ProviderType.FACEBOOK, user.id);
       done(null, user);
     } catch (error) {
       done(error);

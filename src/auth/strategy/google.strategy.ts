@@ -8,10 +8,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(
-    private authRepository: AuthRepository,
-    private userRepository: UserRepository,
-  ) {
+  constructor(private authRepository: AuthRepository, private userRepository: UserRepository) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -27,10 +24,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const { id } = profile;
     profile.photos = [{ value: profile?._json?.picture }];
 
-    let user = await this.userRepository.findUserByProvider(
-      id,
-      ProviderType.GOOGLE,
-    );
+    let user = await this.userRepository.findUserByProvider(id, ProviderType.GOOGLE);
     if (user) {
       return done(null, user);
     }

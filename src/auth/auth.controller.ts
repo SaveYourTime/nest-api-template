@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Res,
-  Body,
-  HttpStatus,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import {
   ApiTags,
   ApiQuery,
@@ -26,10 +18,7 @@ import { LineGuard } from './guards/line.guard';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private authService: AuthService, private jwtService: JwtService) {}
 
   @Post('signup')
   @ApiConflictResponse()

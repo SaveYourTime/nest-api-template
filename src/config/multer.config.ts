@@ -21,9 +21,7 @@ export const MulterConfig: MulterModuleOptions = {
     if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
       return cb(null, true);
     }
-    const error = new BadRequestException(
-      `Unsupported file type ${extname(file.originalname)}`,
-    );
+    const error = new BadRequestException(`Unsupported file type ${extname(file.originalname)}`);
     cb(error, false);
   },
 };

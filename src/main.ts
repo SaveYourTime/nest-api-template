@@ -51,8 +51,6 @@ async function bootstrap() {
   const URL = await app.getUrl();
   logger.log(`Application is running on: ${URL}`);
   logger.log(`Swagger is running on: ${URL}/api`);
-  logger.log(
-    `Accepting requests from origin: "${ACCESS_CONTROL_ALLOW_ORIGIN}"`,
-  );
+  logger.log(`Accepting requests from origin: "${ACCESS_CONTROL_ALLOW_ORIGIN}"`);
 }
 bootstrap();

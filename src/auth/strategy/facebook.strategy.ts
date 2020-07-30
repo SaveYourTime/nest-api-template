@@ -8,10 +8,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
-  constructor(
-    private authRepository: AuthRepository,
-    private userRepository: UserRepository,
-  ) {
+  constructor(private authRepository: AuthRepository, private userRepository: UserRepository) {
     super({
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -27,10 +24,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   ): Promise<void> {
     const { id } = profile;
 
-    let user = await this.userRepository.findUserByProvider(
-      id,
-      ProviderType.FACEBOOK,
-    );
+    let user = await this.userRepository.findUserByProvider(id, ProviderType.FACEBOOK);
     if (user) {
       return done(null, user);
     }

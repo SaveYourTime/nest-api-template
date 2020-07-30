@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpService,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, HttpService } from '@nestjs/common';
 import { AxiosInstance } from 'axios';
 import { Request, Response } from 'express';
 import { AuthRepository } from '../auth.repository';
@@ -49,10 +44,7 @@ export class LineGuard implements CanActivate {
       return false;
     }
 
-    let user = await this.userRepository.findUserByProvider(
-      this.id,
-      ProviderType.LINE,
-    );
+    let user = await this.userRepository.findUserByProvider(this.id, ProviderType.LINE);
     if (user) {
       request.user = user;
       return true;
@@ -88,13 +80,9 @@ export class LineGuard implements CanActivate {
     params.append('client_id', process.env.LINE_CLIENT_ID);
     params.append('client_secret', process.env.LINE_CLIENT_SECRET);
 
-    const response = await this.axios.post(
-      'https://api.line.me/oauth2/v2.1/token',
-      params,
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      },
-    );
+    const response = await this.axios.post('https://api.line.me/oauth2/v2.1/token', params, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
     this.token = response.data;
   }
 
@@ -103,13 +91,9 @@ export class LineGuard implements CanActivate {
     params.append('id_token', this.token.id_token);
     params.append('client_id', process.env.LINE_CLIENT_ID);
 
-    const response = await this.axios.post(
-      'https://api.line.me/oauth2/v2.1/verify',
-      params,
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      },
-    );
+    const response = await this.axios.post('https://api.line.me/oauth2/v2.1/verify', params, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
 
     const { name, email, picture } = response.data;
     if (!email) throw new Error();
