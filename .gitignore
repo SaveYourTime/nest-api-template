@@ -38,3 +38,9 @@ lerna-debug.log*
 
 # Upload files
 /upload
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+!.elasticbeanstalk/config.yml
