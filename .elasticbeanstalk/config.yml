@@ -1,6 +1,9 @@
 branch-defaults:
   master:
-    environment: nest-api-template-dev
+    environment: nest-api-template-production
+    group_suffix: null
+  staging:
+    environment: nest-api-template-staging
     group_suffix: null
 global:
   application_name: nest-api-template
