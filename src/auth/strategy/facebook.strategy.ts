@@ -10,7 +10,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(private authRepository: AuthRepository, private userRepository: UserRepository) {
     super({
-      clientID: process.env.FACEBOOK_APP_ID,
+      clientID: process.env.FACEBOOK_APP_ID ?? 'my_facebook_app_id',
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       fbGraphVersion: 'v7.0',
     } as Strategy.StrategyOptions);

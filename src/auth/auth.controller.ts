@@ -90,7 +90,7 @@ export class AuthController {
 
   private setResponseJWTCookie(res: Response, token: string): void {
     res.cookie('token', token, {
-      maxAge: +process.env.JWT_EXPIRES_IN,
+      maxAge: +process.env.JWT_EXPIRES_IN || 3600000,
       httpOnly: true,
     });
   }

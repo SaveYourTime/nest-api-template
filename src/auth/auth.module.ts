@@ -18,8 +18,8 @@ import { GoogleConnectStrategy } from './strategy/google-connect.strategy';
     TypeOrmModule.forFeature([AuthRepository, UserRepository, ProviderRepository]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
+      secret: process.env.JWT_SECRET_KEY ?? 'my_secret_key',
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN ?? '3600000' },
     }),
     HttpModule,
   ],

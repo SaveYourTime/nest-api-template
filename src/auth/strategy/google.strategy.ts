@@ -10,7 +10,7 @@ import { ProviderType } from '../../providers/provider-type.enum';
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private authRepository: AuthRepository, private userRepository: UserRepository) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientID: process.env.GOOGLE_CLIENT_ID ?? 'my_google_client_id',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     });
   }
