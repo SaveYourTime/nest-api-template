@@ -10,6 +10,7 @@ import {
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
+import { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 
@@ -42,7 +43,15 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
+  // app.useGlobalGuards(new RolesGuard(new Reflector()));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.method === 'GET' && req.url === '/') {
+      return res.status(200).send('<h1>Hello World!</h1>');
+    }
+    next();
+  });
 
   setupSwagger(app);
   await app.listen(PORT);
