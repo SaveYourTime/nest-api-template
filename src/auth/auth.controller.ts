@@ -85,12 +85,12 @@ export class AuthController {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
-    res.redirect(process.env.WEB_URL);
+    res.redirect(process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
   }
 
   private setResponseJWTCookie(res: Response, token: string): void {
     res.cookie('token', token, {
-      maxAge: +process.env.JWT_EXPIRES_IN || 3600000,
+      maxAge: +process.env.JWT_EXPIRES_IN,
       httpOnly: true,
     });
   }

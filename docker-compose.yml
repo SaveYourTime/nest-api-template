@@ -7,8 +7,8 @@ services:
     container_name: task-api
     depends_on:
       - mysql
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     networks:
       - backend
     ports:
@@ -30,8 +30,8 @@ services:
     ports:
       - '${PMA_PORT}:80'
     environment:
-      PMA_HOST: ${RDS_HOSTNAME}
-      PMA_PORT: ${RDS_PORT}
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT}
       TZ: Asia/Taipei
   mysql:
     image: mysql:8.0.21
@@ -47,15 +47,15 @@ services:
     networks:
       - backend
     ports:
-      - '${RDS_PORT}:${RDS_PORT}'
+      - '${DB_PORT}:${DB_PORT}'
     volumes:
       - data-volume:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${RDS_ROOT_PASS}
-      MYSQL_DATABASE: ${RDS_DB_NAME}
-      MYSQL_USER: ${RDS_USERNAME}
-      MYSQL_PASSWORD: ${RDS_PASSWORD}
-      MYSQL_TCP_PORT: ${RDS_PORT}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_TCP_PORT: ${DB_PORT}
       TZ: Asia/Taipei
 networks:
   backend:

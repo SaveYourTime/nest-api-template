@@ -15,7 +15,7 @@ export class GoogleConnectStrategy extends PassportStrategy(Strategy, 'google-co
     private providerRepository: ProviderRepository,
   ) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID ?? 'my_google_client_id',
+      clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       passReqToCallback: true,
     });

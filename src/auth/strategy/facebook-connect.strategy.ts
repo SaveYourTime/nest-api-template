@@ -15,7 +15,7 @@ export class FacebookConnectStrategy extends PassportStrategy(Strategy, 'faceboo
     private providerRepository: ProviderRepository,
   ) {
     super({
-      clientID: process.env.FACEBOOK_APP_ID ?? 'my_facebook_app_id',
+      clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       fbGraphVersion: 'v7.0',
       passReqToCallback: true,
