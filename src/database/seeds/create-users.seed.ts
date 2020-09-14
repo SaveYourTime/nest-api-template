@@ -1,17 +1,22 @@
 import { Factory, Seeder } from 'typeorm-seeding';
+import { Connection } from 'typeorm';
 import { Auth } from '../../auth/auth.entity';
 import { User } from '../../users/user.entity';
 import { Task } from '../../tasks/task.entity';
 
 export default class CreateUsers implements Seeder {
-  public async run(factory: Factory): Promise<any> {
-    const users = await factory(User)().createMany(10);
+  public async run(factory: Factory, connection: Connection): Promise<any> {
+    const exist = await connection.createQueryBuilder<User>(User, 'u').getCount();
 
-    for (const user of users) {
-      const { id } = user;
+    if (!exist) {
+      const users = await factory(User)().createMany(10);
 
-      await factory(Auth)({ id }).create();
-      await factory(Task)({ id }).create();
+      for (const user of users) {
+        const { id } = user;
+
+        await factory(Auth)({ id }).create();
+        await factory(Task)({ id }).create();
+      }
     }
   }
 }
