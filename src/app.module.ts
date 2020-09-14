@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './config/ormconfig';
@@ -16,4 +17,8 @@ import { ProvidersModule } from './providers/providers.module';
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule {
+  onApplicationBootstrap(): void {
+    exec('npm run seed:run');
+  }
+}
