@@ -110,6 +110,6 @@ export class LineGuard implements CanActivate {
   }
 
   private redirectToErrorPage(response: Response) {
-    response.redirect(`${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}/error`);
+    response.redirect(`${process.env.WEB_HOST}/error`);
   }
 }

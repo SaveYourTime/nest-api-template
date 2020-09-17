@@ -85,7 +85,7 @@ export class AuthController {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     this.setResponseJWTCookie(res, token);
-    res.redirect(process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
+    res.redirect(process.env.WEB_HOST);
   }
 
   private setResponseJWTCookie(res: Response, token: string): void {

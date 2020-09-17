@@ -23,19 +23,35 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installation
 
 ```bash
-# clone and install dependencies
+# clone the project
 git clone https://github.com/SaveYourTime/nest-api-template.git
-cd nest-api-template
-yarn
 
-# Run in development and serve at localhost:3000
+# cd to the project
+cd nest-api-template
+
+# install dependencies
+yarn
+```
+
+### Run the server
+
+#### (1) Run without Docker
+```bash
+# Run in development and serve at localhost:5000
 yarn start:dev
 
 # build for production
 yarn build
 
-# Run in production and serve at localhost:3000
-yarn start
+# Run in production and serve at localhost:5000
+yarn start:prod
+```
+
+#### (2) Run with Docker
+```bash
+# Run in development and serve at localhost:5000
+# Docker will also build up the `phpmyadmin` and `mysql` server
+docker-compose up -d
 ```
 
 ### Seeds

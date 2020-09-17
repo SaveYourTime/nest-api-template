@@ -15,8 +15,9 @@ import { AppModule } from './app.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 
 const {
-  PORT = 3000,
-  ACCESS_CONTROL_ALLOW_ORIGIN = '*',
+  PORT = 5000,
+  WEB_HOST = 'http://localhost:3000',
+  ADMIN_HOST = 'http://localhost:4000',
   ACCESS_CONTROL_ALLOW_CREDENTIALS = 'true',
 } = process.env;
 
@@ -36,7 +37,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v1');
   app.enableCors({
-    origin: ACCESS_CONTROL_ALLOW_ORIGIN,
+    origin: [WEB_HOST, ADMIN_HOST],
     credentials: ACCESS_CONTROL_ALLOW_CREDENTIALS === 'true',
   });
   app.use(helmet());
@@ -60,6 +61,6 @@ async function bootstrap() {
   const URL = await app.getUrl();
   logger.log(`Application is running on: ${URL}`);
   logger.log(`Swagger is running on: ${URL}/api`);
-  logger.log(`Accepting requests from origin: "${ACCESS_CONTROL_ALLOW_ORIGIN}"`);
+  logger.log(`Accepting requests from origin: [${[WEB_HOST, ADMIN_HOST]}]`);
 }
 bootstrap();
