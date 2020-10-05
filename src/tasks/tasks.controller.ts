@@ -44,6 +44,7 @@ import { TaskStatus } from './task-status.enum';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { User } from '../users/user.entity';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('tasks')
 @ApiBearerAuth()
@@ -74,6 +75,7 @@ export class TasksController {
 
   @Patch(':id/status')
   @Roles('admin')
+  @UseGuards(RolesGuard)
   @ApiParam({ name: 'id', example: 1 })
   @ApiBody({
     schema: {
@@ -93,6 +95,7 @@ export class TasksController {
 
   @Delete(':id')
   @Roles('admin')
+  @UseGuards(RolesGuard)
   @ApiParam({ name: 'id', example: 1 })
   @HttpCode(204)
   delete(@Param('id', ParseIntPipe) id: number, @GetUser() user: User): Promise<void> {

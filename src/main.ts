@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
@@ -12,7 +11,6 @@ import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
-import { RolesGuard } from './auth/guards/roles.guard';
 
 const {
   PORT = 5000,
@@ -43,8 +41,6 @@ async function bootstrap() {
   app.use(helmet());
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
-  // app.useGlobalGuards(new RolesGuard(new Reflector()));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   // app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
   app.use((req: Request, res: Response, next: NextFunction) => {
