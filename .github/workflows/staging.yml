@@ -3,7 +3,7 @@
 name: CD
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events but only for the staging branch
 on:
   push:
     branches: [staging]
@@ -12,7 +12,7 @@ on:
 
 # A map of environment variables that are available to all jobs and steps in the workflow
 env:
-  ENVIRONMENT_NAME: nest-api-template-staging
+  AWS_ENVIRONMENT_NAME: nest-api-template-staging
   AWS_DEFAULT_REGION: ap-northeast-1
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -43,7 +43,7 @@ jobs:
       - name: Deploy
         uses: hmanzur/actions-aws-eb@v1.0.0
         with:
-          command: 'deploy ${{ env.ENVIRONMENT_NAME }}'
+          command: 'deploy ${{ env.AWS_ENVIRONMENT_NAME }}'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
