@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { RoleType } from './role.enum';
@@ -34,6 +34,6 @@ export class Role extends BaseEntity {
   @DeleteDateColumn()
   deletedAt?: Date;
 
-  @OneToMany((type) => User, (user) => user.role)
+  @ManyToMany((type) => User, (user) => user.roles)
   users: User[];
 }

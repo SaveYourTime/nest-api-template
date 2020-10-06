@@ -37,6 +37,6 @@ define(User, (faker: typeof Faker, role: Role) => {
   user.photo = photo;
   user.marriage = marriage;
   user.education = education;
-  user.role = role;
+  user.roles = [role];
   return user;
 });

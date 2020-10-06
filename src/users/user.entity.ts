@@ -9,7 +9,8 @@ import {
   Unique,
   OneToMany,
   OneToOne,
-  ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { Auth } from '../auth/auth.entity';
@@ -86,15 +87,13 @@ export class User extends BaseEntity {
   @OneToMany((type) => Task, (task) => task.user, { eager: false })
   tasks: Task[];
 
-  @ManyToOne((type) => Role, (role) => role.users, {
+  @ManyToMany((type) => Role, (role) => role.users, {
     nullable: false,
     onUpdate: 'CASCADE',
     eager: true,
   })
-  role: Role;
-
-  @Column()
-  roleId: number;
+  @JoinTable()
+  roles: Role[];
 
   @Expose()
   get fullName(): string {

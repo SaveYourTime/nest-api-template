@@ -26,6 +26,7 @@ export class AuthRepository extends Repository<Auth> {
     const { username, password } = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const role = await this.connection.getRepository(Role).findOneOrFail({ name: RoleType.USER });
 
     const auth = new Auth();
     auth.username = username;
@@ -34,7 +35,7 @@ export class AuthRepository extends Repository<Auth> {
     const user = new User();
     user.email = username;
     user.auth = auth;
-    user.role = await this.connection.getRepository(Role).findOneOrFail({ name: RoleType.USER });
+    user.roles = [role];
 
     try {
       await user.save();
@@ -75,6 +76,7 @@ export class AuthRepository extends Repository<Auth> {
       emails: [{ value: email }],
       photos: [{ value: photo }],
     } = profile;
+    const role = await this.connection.getRepository(Role).findOneOrFail({ name: RoleType.USER });
 
     const auth = new Auth();
     auth.username = email;
@@ -90,7 +92,7 @@ export class AuthRepository extends Repository<Auth> {
     user.photo = photo;
     user.auth = auth;
     user.provider = [...(user.provider ?? []), provider];
-    user.role = await this.connection.getRepository(Role).findOneOrFail({ name: RoleType.USER });
+    user.roles = [role];
 
     try {
       await user.save();

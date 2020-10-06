@@ -42,6 +42,7 @@ import { TaskStatus } from './task-status.enum';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { User } from '../users/user.entity';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { RoleType } from '../roles/role.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiBearerAuth()
@@ -70,7 +71,7 @@ export class TasksController {
   }
 
   @Patch(':id/status')
-  @Roles('admin')
+  @Roles(RoleType.ADMIN)
   @UseGuards(RolesGuard)
   @ApiParam({ name: 'id', example: 1 })
   @ApiBody({
@@ -90,7 +91,7 @@ export class TasksController {
   }
 
   @Delete(':id')
-  @Roles('admin')
+  @Roles(RoleType.ADMIN)
   @UseGuards(RolesGuard)
   @ApiParam({ name: 'id', example: 1 })
   @HttpCode(204)
