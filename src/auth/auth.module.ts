@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthRepository } from './auth.repository';
 import { UserRepository } from '../users/user.repository';
 import { ProviderRepository } from '../providers/provider.repository';
+import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
 import { FacebookConnectStrategy } from './strategy/facebook-connect.strategy';
@@ -25,6 +26,7 @@ import { GoogleConnectStrategy } from './strategy/google-connect.strategy';
   ],
   exports: [
     PassportModule,
+    LocalStrategy,
     JwtStrategy,
     FacebookStrategy,
     FacebookConnectStrategy,
@@ -34,6 +36,7 @@ import { GoogleConnectStrategy } from './strategy/google-connect.strategy';
   controllers: [AuthController],
   providers: [
     AuthService,
+    LocalStrategy,
     JwtStrategy,
     FacebookStrategy,
     FacebookConnectStrategy,

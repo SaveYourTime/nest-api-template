@@ -48,17 +48,20 @@ export class AuthRepository extends Repository<Auth> {
     }
   }
 
-  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<number> {
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<User> {
     const { username, password } = authCredentialsDto;
 
-    const auth = await this.findOne({ username });
+    const auth = await this.createQueryBuilder('auth')
+      .innerJoinAndSelect('auth.user', 'user')
+      .where('auth.username = :username', { username })
+      .getOne();
     if (!auth) {
       throw new UnauthorizedException('User not found');
     }
 
     const valid = await auth.validatePassword(password);
     if (auth && valid) {
-      return auth.userId;
+      return auth.user;
     }
 
     throw new UnauthorizedException('Password incorrect');
