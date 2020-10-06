@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Unique,
   OneToOne,
   JoinColumn,
@@ -26,13 +27,20 @@ export class Auth extends BaseEntity {
   @Column({ nullable: true })
   password?: string;
 
+  @Exclude()
+  @Column({ nullable: true })
+  resetToken?: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne((type) => User, (user) => user.id, {
+  @DeleteDateColumn()
+  deletedAt?: Date;
+
+  @OneToOne((type) => User, (user) => user.auth, {
     nullable: false,
     onUpdate: 'CASCADE',
   })

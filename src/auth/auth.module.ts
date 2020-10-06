@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AuthRepository } from './auth.repository';
 import { UserRepository } from '../users/user.repository';
-import { ProviderRepository } from 'src/providers/provider.repository';
+import { ProviderRepository } from '../providers/provider.repository';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { FacebookStrategy } from './strategy/facebook.strategy';
 import { FacebookConnectStrategy } from './strategy/facebook-connect.strategy';

@@ -1,24 +1,42 @@
 import Faker from 'faker';
 import { define } from 'typeorm-seeding';
 import { User } from '../../users/user.entity';
+import { Role } from '../../roles/role.entity';
 import { Gender } from '../../users/gender.enum';
+import { Marriage } from '../../users/marriage.enum';
+import { Education } from '../../users/education.enum';
 
-define(User, (faker: typeof Faker) => {
+define(User, (faker: typeof Faker, role: Role) => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
+  const nickName = faker.internet.userName();
   const email = faker.internet.exampleEmail(firstName, lastName);
   const phone = faker.phone.phoneNumber();
+  const city = faker.address.city();
+  const district = faker.address.county();
   const address = faker.address.streetAddress();
   const dateOfBirth = faker.date.past();
+  const occupation = faker.name.jobTitle();
   const gender = faker.random.objectElement<Gender>(Gender);
+  const photo = faker.image.avatar();
+  const marriage = faker.random.objectElement<Marriage>(Marriage);
+  const education = faker.random.objectElement<Education>(Education);
 
   const user = new User();
   user.firstName = firstName;
   user.lastName = lastName;
-  user.gender = gender;
+  user.nickName = nickName;
   user.email = email;
   user.phone = phone;
+  user.city = city;
+  user.district = district;
   user.address = address;
   user.dateOfBirth = dateOfBirth;
+  user.occupation = occupation;
+  user.gender = gender;
+  user.photo = photo;
+  user.marriage = marriage;
+  user.education = education;
+  user.role = role;
   return user;
 });

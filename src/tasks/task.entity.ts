@@ -3,12 +3,12 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 import { TaskStatus } from './task-status.enum';
 import { User } from '../users/user.entity';
 
@@ -23,6 +23,12 @@ export class Task extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
+  @ApiProperty({
+    type: 'enum',
+    enum: TaskStatus,
+    description: 'The status of the task',
+    default: TaskStatus.OPEN,
+  })
   @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.OPEN })
   status: TaskStatus = TaskStatus.OPEN;
 
@@ -35,12 +41,11 @@ export class Task extends BaseEntity {
   @DeleteDateColumn()
   deletedAt?: Date;
 
-  @ManyToOne((type) => User, (user) => user.id, {
+  @ManyToOne((type) => User, (user) => user.tasks, {
     nullable: false,
     onUpdate: 'CASCADE',
     eager: false,
   })
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column()

@@ -5,13 +5,13 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Unique,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../users/user.entity';
 import { ProviderType } from './provider-type.enum';
+import { User } from '../users/user.entity';
 
 @Entity()
 @Unique(['providerId', 'type'])
@@ -36,11 +36,13 @@ export class Provider extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.id, {
+  @DeleteDateColumn()
+  deletedAt?: Date;
+
+  @ManyToOne((type) => User, (user) => user.provider, {
     nullable: false,
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column()

@@ -31,8 +31,6 @@ import {
   ApiCookieAuth,
   ApiNotFoundResponse,
   ApiForbiddenResponse,
-  ApiBadRequestResponse,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { TasksService } from './tasks.service';
@@ -46,13 +44,11 @@ import { User } from '../users/user.entity';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 
-@ApiTags('tasks')
 @ApiBearerAuth()
 @ApiCookieAuth()
-@ApiUnauthorizedResponse()
-@ApiBadRequestResponse()
-@Controller('tasks')
 @UseGuards(AuthGuard())
+@ApiTags('tasks')
+@Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 

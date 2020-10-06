@@ -5,15 +5,20 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Unique,
   OneToMany,
   OneToOne,
+  ManyToOne,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { Auth } from '../auth/auth.entity';
 import { Task } from '../tasks/task.entity';
+import { Role } from '../roles/role.entity';
 import { Provider } from '../providers/provider.entity';
 import { Gender } from './gender.enum';
+import { Marriage } from './marriage.enum';
+import { Education } from './education.enum';
 
 @Entity()
 @Unique(['email'])
@@ -27,6 +32,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   lastName?: string;
 
+  @Column({ nullable: true })
+  nickName?: string;
+
   @Column()
   email: string;
 
@@ -34,10 +42,19 @@ export class User extends BaseEntity {
   phone?: string;
 
   @Column({ nullable: true })
+  city?: string;
+
+  @Column({ nullable: true })
+  district?: string;
+
+  @Column({ nullable: true })
   address?: string;
 
   @Column({ type: 'date', nullable: true })
   dateOfBirth?: Date;
+
+  @Column({ nullable: true })
+  occupation?: string;
 
   @Column({ type: 'enum', enum: Gender, nullable: true })
   gender?: Gender;
@@ -45,11 +62,20 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   photo?: string;
 
+  @Column({ type: 'enum', enum: Marriage, nullable: true })
+  marriage?: Marriage;
+
+  @Column({ type: 'enum', enum: Education, nullable: true })
+  education?: Education;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @OneToOne((type) => Auth, (auth) => auth.user, { cascade: true })
   auth: Auth;
@@ -58,12 +84,24 @@ export class User extends BaseEntity {
   provider: Provider[];
 
   @OneToMany((type) => Task, (task) => task.user, { eager: false })
-  task: Task[];
+  tasks: Task[];
+
+  @ManyToOne((type) => Role, (role) => role.users, {
+    nullable: false,
+    onUpdate: 'CASCADE',
+    eager: true,
+  })
+  role: Role;
+
+  @Column()
+  roleId: number;
 
   @Expose()
   get fullName(): string {
-    if (!this.firstName || !this.lastName) return null;
-    return `${this.firstName} ${this.lastName}`;
+    if (this.firstName && this.lastName) {
+      return `${this.lastName} ${this.firstName}`;
+    }
+    return this.firstName || this.lastName;
   }
 
   @Expose()
