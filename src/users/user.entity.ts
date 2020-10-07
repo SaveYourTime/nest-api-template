@@ -43,6 +43,9 @@ export class User extends BaseEntity {
   phone?: string;
 
   @Column({ nullable: true })
+  zipCode?: string;
+
+  @Column({ nullable: true })
   city?: string;
 
   @Column({ nullable: true })

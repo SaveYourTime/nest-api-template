@@ -1,9 +1,10 @@
 import {
+  IsEnum,
   IsEmail,
   IsString,
-  IsPhoneNumber,
   IsISO8601,
-  IsEnum,
+  IsPostalCode,
+  IsPhoneNumber,
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
@@ -33,6 +34,11 @@ export class UserProfileDto {
   @IsPhoneNumber('TW')
   @IsNotEmpty()
   phone: string;
+
+  @IsString()
+  @IsPostalCode('TW')
+  @IsOptional()
+  zipCode?: string;
 
   @IsString()
   @IsOptional()
