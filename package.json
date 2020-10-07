@@ -33,7 +33,7 @@
     "@nestjs/typeorm": "^7.1.0",
     "aws-sdk": "^2.768.0",
     "bcryptjs": "^2.4.3",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "cookie-parser": "^1.4.5",
     "dayjs": "^1.9.1",
