@@ -91,7 +91,7 @@ export class AuthRepository extends Repository<Auth> {
     user.lastName = givenName;
     user.photo = photo;
     user.auth = auth;
-    user.provider = [...(user.provider ?? []), provider];
+    user.providers = [...(user.providers ?? []), provider];
     user.roles = [role];
 
     try {

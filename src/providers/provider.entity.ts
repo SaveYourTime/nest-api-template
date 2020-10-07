@@ -39,7 +39,7 @@ export class Provider extends BaseEntity {
   @DeleteDateColumn()
   deletedAt?: Date;
 
-  @ManyToOne((type) => User, (user) => user.provider, {
+  @ManyToOne((type) => User, (user) => user.providers, {
     nullable: false,
     onUpdate: 'CASCADE',
   })

@@ -85,7 +85,7 @@ export class User extends BaseEntity {
   auth: Auth;
 
   @OneToMany((type) => Provider, (provider) => provider.user, { cascade: true })
-  provider: Provider[];
+  providers: Provider[];
 
   @OneToMany((type) => Task, (task) => task.user, { eager: false })
   tasks: Task[];
