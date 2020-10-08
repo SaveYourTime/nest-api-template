@@ -14,9 +14,9 @@ import {
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { Auth } from '../auth/auth.entity';
-import { Task } from '../tasks/task.entity';
 import { Role } from '../roles/role.entity';
 import { Provider } from '../providers/provider.entity';
+import { Task } from '../tasks/task.entity';
 import { Gender } from './gender.enum';
 import { Marriage } from './marriage.enum';
 import { Education } from './education.enum';
@@ -87,9 +87,6 @@ export class User extends BaseEntity {
   @OneToMany((type) => Provider, (provider) => provider.user, { cascade: true })
   providers: Provider[];
 
-  @OneToMany((type) => Task, (task) => task.user, { eager: false })
-  tasks: Task[];
-
   @ManyToMany((type) => Role, (role) => role.users, {
     nullable: false,
     onUpdate: 'CASCADE',
@@ -97,6 +94,9 @@ export class User extends BaseEntity {
   })
   @JoinTable({ name: 'user_role' })
   roles: Role[];
+
+  @OneToMany((type) => Task, (task) => task.user, { eager: false })
+  tasks: Task[];
 
   @Expose()
   get fullName(): string {
