@@ -44,7 +44,7 @@ export class AuthController {
   @Post('signin')
   @UseGuards(AuthGuard('local'))
   @ApiUnauthorizedResponse()
-  async signIn(@GetUser('id') id: number, @Res() res: Response): Promise<void> {
+  signIn(@GetUser('id') id: number, @Res() res: Response): void {
     this.setCookieAndResponseJWT(res, id);
   }
 

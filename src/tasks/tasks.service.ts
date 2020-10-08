@@ -10,7 +10,7 @@ import { User } from '../users/user.entity';
 export class TasksService {
   constructor(private taskRepository: TaskRepository) {}
 
-  async findAll(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
+  find(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     return this.taskRepository.findAll(filterDto, user);
   }
 
@@ -22,8 +22,8 @@ export class TasksService {
     return task;
   }
 
-  async create(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
-    return await this.taskRepository.createTask(createTaskDto, user);
+  create(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    return this.taskRepository.createTask(createTaskDto, user);
   }
 
   async updateTaskStatus(id: number, status: TaskStatus, user: User): Promise<Task> {

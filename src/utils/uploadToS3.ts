@@ -46,7 +46,7 @@ s3.listBuckets((err, data) => {
   }
 });
 
-export const uploadToS3 = async (
+export const uploadToS3 = (
   file: Express.Multer.File,
   path = '',
 ): Promise<S3.ManagedUpload.SendData> => {

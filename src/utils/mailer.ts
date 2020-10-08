@@ -11,7 +11,7 @@ interface Mailer {
   reply?: string[];
 }
 
-export const mailer = async ({
+export const mailer = ({
   from = 'service@api.com',
   to,
   cc,

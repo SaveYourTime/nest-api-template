@@ -43,11 +43,8 @@ export class UsersController {
 
   @Patch()
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  async updateProfile(
-    @GetUser('id') id: number,
-    @Body() userProfileDto: UserProfileDto,
-  ): Promise<User> {
-    return this.usersService.updateProfile(id, userProfileDto);
+  update(@GetUser('id') id: number, @Body() userProfileDto: UserProfileDto): Promise<User> {
+    return this.usersService.update(id, userProfileDto);
   }
 
   @Post('avatar')

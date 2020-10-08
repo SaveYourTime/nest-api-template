@@ -7,8 +7,8 @@ import { UserProfileDto } from './dto/user-profile.dto';
 export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
-  async find(): Promise<User[]> {
-    return await this.userRepository.find({
+  find(): Promise<User[]> {
+    return this.userRepository.find({
       join: {
         alias: 'user',
         leftJoinAndSelect: {
@@ -18,16 +18,16 @@ export class UsersService {
     });
   }
 
-  async findMine(id: number): Promise<User> {
-    return await this.userRepository.findOne(id);
+  findMine(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
   }
 
-  async updateProfile(id: number, userProfileDto: UserProfileDto): Promise<User> {
-    return await this.userRepository.updateProfile(id, userProfileDto);
+  update(id: number, userProfileDto: UserProfileDto): Promise<User> {
+    return this.userRepository.updateProfile(id, userProfileDto);
   }
 
-  async uploadAvatar(id: number, file: Express.Multer.File): Promise<User> {
+  uploadAvatar(id: number, file: Express.Multer.File): Promise<User> {
     // Upload avatar to cloud storage
-    return await this.userRepository.updateAvatar(id, file.filename);
+    return this.userRepository.updateAvatar(id, file.filename);
   }
 }
