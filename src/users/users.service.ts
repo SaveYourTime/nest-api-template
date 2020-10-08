@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 import { UserProfileDto } from './dto/user-profile.dto';
+import { uploadToS3 } from '../utils/uploadToS3';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +13,7 @@ export class UsersService {
       join: {
         alias: 'user',
         leftJoinAndSelect: {
-          provider: 'user.provider',
+          provider: 'user.providers',
         },
       },
     });
@@ -26,8 +27,8 @@ export class UsersService {
     return this.userRepository.updateProfile(id, userProfileDto);
   }
 
-  uploadAvatar(id: number, file: Express.Multer.File): Promise<User> {
-    // Upload avatar to cloud storage
-    return this.userRepository.updateAvatar(id, file.filename);
+  async uploadAvatar(id: number, file: Express.Multer.File): Promise<User> {
+    const { Location } = await uploadToS3(file);
+    return this.userRepository.updateAvatar(id, Location);
   }
 }
