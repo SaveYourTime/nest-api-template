@@ -1,9 +1,10 @@
 import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from './auth.repository';
+import { User } from '../users/user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { User } from '../users/user.entity';
+import { mailer } from '../utils/mailer';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +24,7 @@ export class AuthService {
 
     const resetLink = `${process.env.WEB_HOST}/reset?token=${token}`;
     try {
-      // Send the reset password link to user
-      const mail = {
+      await mailer({
         to: [email],
         subject: 'Reset your Password',
         content: `
@@ -32,8 +32,7 @@ export class AuthService {
           2. 點此連結『<a href="${resetLink}">Reset Password</a>』完成密碼重設。<br />
           3. 如果您無法點開連結，請複製此網址完成密碼重設<br />
           ${resetLink}`,
-      };
-      return mail;
+      });
     } catch (error) {
       throw new InternalServerErrorException(`Can not send reset password link to ${email}`);
     }
