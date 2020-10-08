@@ -13,4 +13,5 @@ module.exports = {
   seeds: [__dirname + '/../database/seeds/**/*{.ts,.js}'],
   factories: [__dirname + '/../database/factories/**/*{.ts,.js}'],
   namingStrategy: new SnakeNamingStrategy(),
+  legacySpatialSupport: false,
 };

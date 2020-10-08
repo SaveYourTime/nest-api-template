@@ -12,4 +12,5 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   synchronize: process.env.DB_SYNC === 'true',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   namingStrategy: new SnakeNamingStrategy(),
+  legacySpatialSupport: false,
 };
