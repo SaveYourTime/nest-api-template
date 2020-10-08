@@ -95,7 +95,7 @@ export class User extends BaseEntity {
     onUpdate: 'CASCADE',
     eager: true,
   })
-  @JoinTable()
+  @JoinTable({ name: 'user_role' })
   roles: Role[];
 
   @Expose()
