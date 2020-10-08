@@ -9,7 +9,7 @@ import { UserProfileDto } from './dto/user-profile.dto';
 export class UserRepository extends Repository<User> {
   async findUserByProvider(id: string, type: ProviderType): Promise<User> {
     const user = await this.createQueryBuilder('user')
-      .innerJoinAndSelect('user.provider', 'provider')
+      .innerJoinAndSelect('user.providers', 'provider')
       .where('provider.providerId = :id', { id })
       .andWhere('provider.type = :type', { type })
       .getOne();
