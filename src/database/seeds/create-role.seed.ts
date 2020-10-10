@@ -7,8 +7,8 @@ import { roles } from '../../constants/roles';
 export default class CreateRole implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<void> {
     const exist = await connection
-      .createQueryBuilder<Role>(Role, 'r')
-      .where('r.name IN (:roles)', { roles })
+      .createQueryBuilder<Role>(Role, 'role')
+      .where('role.name IN (:roles)', { roles })
       .getCount();
 
     if (!exist) {

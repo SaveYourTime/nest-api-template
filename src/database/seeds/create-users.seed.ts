@@ -10,7 +10,7 @@ export default class CreateUsers implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const exist = await connection.createQueryBuilder<User>(User, 'u').getCount();
     const role = await connection
-      .createQueryBuilder<Role>(Role, 'r')
+      .createQueryBuilder<Role>(Role, 'role')
       .where({ name: RoleType.USER })
       .getOne();
 
