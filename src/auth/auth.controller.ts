@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiTags,
+  ApiBody,
   ApiQuery,
   ApiConflictResponse,
   ApiForbiddenResponse,
@@ -42,9 +43,17 @@ export class AuthController {
   }
 
   @Post('signin')
+  @ApiBody({ type: AuthCredentialsDto })
   @UseGuards(AuthGuard('local'))
   @ApiUnauthorizedResponse()
   signIn(@GetUser('id') id: number, @Res() res: Response): void {
+    this.setCookieAndResponseJWT(res, id);
+  }
+
+  @Get('verify')
+  @UseGuards(AuthGuard())
+  @ApiUnauthorizedResponse()
+  verify(@GetUser('id') id: number, @Res() res: Response): void {
     this.setCookieAndResponseJWT(res, id);
   }
 
