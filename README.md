@@ -17,6 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 1. Clone the project `git clone https://github.com/SaveYourTime/nest-api-template.git`
 2. Install dependencies (we use `yarn`)
 3. Create a `.env` file in the root like the `.env.example` file.
+4. Apply needed policies to your EC2 role in AWS IAM, such as `AmazonS3FullAccess` and `AmazonSESFullAccess`.
 
 > ⚠️ Ensure you have setup the `.env` file, before starting the server.
 
@@ -36,6 +37,7 @@ yarn
 ### Run the server
 
 #### (1) Run without Docker
+
 ```bash
 # Run in development and serve at localhost:5000
 yarn start:dev
@@ -48,6 +50,7 @@ yarn start:prod
 ```
 
 #### (2) Run with Docker
+
 ```bash
 # Run in development and serve at localhost:5000
 # Docker will also build up the `phpmyadmin` and `mysql` server
@@ -109,11 +112,19 @@ Having `module`, `controller`, `service`, `entity`, `repository` inside.
 
 ##### `src/config`
 
-The typeorm configuration file for creating a new connection.
+The typeorm configuration file for creating a new connection, multer configuration file for handling upload files.
+
+##### `src/constants`
+
+Place static data, such as cities, rols here.
 
 ##### `src/database`
 
 Here's where we create a factory and a seed script.
+
+##### `src/utils`
+
+Place all utility functions here, such as mailer or uploadHandler.
 
 ##### `src/app.module.ts`
 
