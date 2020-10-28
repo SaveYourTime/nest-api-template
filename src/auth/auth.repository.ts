@@ -87,8 +87,8 @@ export class AuthRepository extends Repository<Auth> {
 
     const user = new User();
     user.email = email;
-    user.firstName = familyName;
-    user.lastName = givenName;
+    user.firstName = givenName;
+    user.lastName = familyName;
     user.photo = photo;
     user.auth = auth;
     user.providers = [...(user.providers ?? []), provider];
