@@ -39,7 +39,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const id = await this.authService.signUp(authCredentialsDto);
-    this.setCookieAndResponseJWT(res, id);
+    this.responseCookieToken(res, id);
   }
 
   @Post('signin')
@@ -47,7 +47,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @ApiUnauthorizedResponse()
   signIn(@GetUser('id') id: number, @Res() res: Response): void {
-    this.setCookieAndResponseJWT(res, id);
+    this.responseCookieToken(res, id);
   }
 
   @Post('signout')
@@ -60,7 +60,7 @@ export class AuthController {
   @UseGuards(AuthGuard())
   @ApiUnauthorizedResponse()
   verify(@GetUser('id') id: number, @Res() res: Response): void {
-    this.setCookieAndResponseJWT(res, id);
+    this.responseCookieToken(res, id);
   }
 
   @Get('facebook')
@@ -69,7 +69,7 @@ export class AuthController {
   @ApiConflictResponse()
   @ApiUnauthorizedResponse()
   signInWithFacebook(@GetUser('id') id: number, @Res() res: Response): void {
-    this.setCookieAndResponseJWT(res, id);
+    this.responseCookieToken(res, id);
   }
 
   @Get('facebook/connect')
@@ -86,7 +86,7 @@ export class AuthController {
   @ApiConflictResponse()
   @ApiUnauthorizedResponse()
   signInWithGoogle(@GetUser('id') id: number, @Res() res: Response): void {
-    this.setCookieAndResponseJWT(res, id);
+    this.responseCookieToken(res, id);
   }
 
   @Get('google/connect')
@@ -102,7 +102,7 @@ export class AuthController {
   @ApiQuery({ name: 'code', type: 'string' })
   @ApiForbiddenResponse()
   signInWithLine(@GetUser('id') id: number, @Res() res: Response): void {
-    this.setCookieAndResponseJWT(res, id, process.env.WEB_HOST);
+    this.responseCookieToken(res, id, process.env.WEB_HOST);
   }
 
   @Get('reset')
@@ -126,7 +126,7 @@ export class AuthController {
     await this.authService.resetPassword(token, resetPasswordDto.password);
   }
 
-  private setCookieAndResponseJWT(res: Response, id: number, redirectURL?: string): void {
+  private responseCookieToken(res: Response, id: number, redirectURL?: string): void {
     const payload: JwtPayload = { id };
     const token = this.jwtService.sign(payload);
     res.cookie('token', token, {
@@ -136,7 +136,7 @@ export class AuthController {
     if (redirectURL) {
       res.redirect(redirectURL);
     } else {
-      res.status(HttpStatus.OK).json({ token });
+      res.status(HttpStatus.OK).send();
     }
   }
 }
