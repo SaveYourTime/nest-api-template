@@ -50,6 +50,12 @@ export class AuthController {
     this.setCookieAndResponseJWT(res, id);
   }
 
+  @Post('signout')
+  signOut(@Res() res: Response): void {
+    res.clearCookie('token');
+    res.status(HttpStatus.OK).send();
+  }
+
   @Get('verify')
   @UseGuards(AuthGuard())
   @ApiUnauthorizedResponse()
